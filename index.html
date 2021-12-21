@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+        <title>Angry Grizzly!</title>
+        <meta name="description" content="Angry Grizzly! A Grizzy and the Lemmings fanart game">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/src/styles/style.css">
+    </head>
+    <body>
+        <h1>Angry Grizzly!</h1>
+        <div id="intro"></div>
+        <div id="game">
+            <canvas id="ui-layer" width="800" height="600">Your browser is lacking the canvas feature. Sorry!</canvas>
+            <canvas id="game-layer" width="800" height="600">Your browser is lacking the canvas feature. Sorry!</canvas>
+            <canvas id="background-layer" width="800" height="600">Your browser is lacking the canvas feature. Sorry!</canvas>
+        </div>
+        <ul list-style-type="none" id="help">
+            <li>&lt;esc&gt;: Reset the game</li>
+            <li>&lt;&uarr;&gt;: launch higher</li>
+            <li>&lt;&darr;&gt;: launch lower</li>
+            <li>&lt;&larr;&gt;: power down</li>
+            <li>&lt;&rarr;&gt;: power up</li>
+          </ul>
+        <div id="footer">
+            © 2001 - Julien Leroy
+        </div>
+        <img src="/src/assets/mr-donkey.gif" alt="Mr Donkey, my daughter's teddy">
+        <script type="module" src="/src/scripts/app.ts" async></script>
+    </body>
+</html>

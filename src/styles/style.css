@@ -1,0 +1,29 @@
+body {
+    background: blanchedalmond;
+}
+h1 {
+    color: chocolate;
+}
+/* #game { */
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#2fdbf9+0,e2f4ff+67,158719+76,7c3333+100 */
+    /* background: #2fdbf9; */ /* Old browsers */
+    /* background: -moz-linear-gradient(top,  hsla(189,95%,58%,1) 0%, hsla(203,100%,95%,1) 67%, hsla(122,73%,31%,1) 76%, hsla(0,42%,35%,1) 100%); */ /* FF3.6-15 */
+    /* background: -webkit-linear-gradient(top,  hsla(189,95%,58%,1) 0%,hsla(203,100%,95%,1) 67%,hsla(122,73%,31%,1) 76%,hsla(0,42%,35%,1) 100%); */ /* Chrome10-25,Safari5.1-6 */
+    /* background: linear-gradient(to bottom,  hsla(189,95%,58%,1) 0%,hsla(203,100%,95%,1) 67%,hsla(122,73%,31%,1) 76%,hsla(0,42%,35%,1) 100%); */ /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    /* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2fdbf9', endColorstr='#7c3333',GradientType=0 ); */ /* IE6-9 */
+/*     width: 800px;
+    height: 600px;
+    position: relative;
+    border: 2px solid maroon
+} */
+h1 {
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+canvas { position: absolute; }
+#ui-layer { z-index: 3 }
+#game-layer { z-index: 2 }
+#background-layer { z-index: 1 }
+ul {
+  list-style-type: none;
+  color: chocolate;
+}
