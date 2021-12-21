@@ -1,18 +1,11 @@
 import { GameEnvironment } from './gameEnvironment';
 import { GrizzlyArm, Character, Score } from "./characters";
 
-const app = document.querySelector<HTMLDivElement>('#intro')!
-
 function reinitialize() {
   grizzlyArm.initialize(50,400,70,15);
   score.initialize(0);
   grizzlyArm.draw();
 }
-
-app.innerHTML = `
-  <p>Grizzly can't sleep and he's angry</p>
-  <a href="#help">Help</a>
-`
 
 const uiCanvas = <HTMLCanvasElement>document.getElementById('ui-layer');
 const uiCtx = uiCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: No ui context")})();
