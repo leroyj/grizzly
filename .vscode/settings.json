@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
-        "html-css"
+        "html-css",
+        "documentation"
     ]
 }
