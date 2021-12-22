@@ -2,6 +2,10 @@
 
 ![screenshot](https://github.com/leroyj/grizzly/blob/main/src/assets/screenshot.png?raw=true)
 
+
+## Demo
+
+Have a look to the [demo](http://grizzly.djoo.org/)!
 ## Intent
 
 This game is a fan art inspired by the animation serie Grizzly and the Lemmings from the talented french [Studio Hari](https://www.studiohari.com/).
