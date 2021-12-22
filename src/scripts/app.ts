@@ -14,8 +14,10 @@ const gameCtx = gameCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: N
 const bkgCanvas = <HTMLCanvasElement>document.getElementById('background-layer')
 const bkgdCtx = bkgCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: No background context")})();
 
-const grizzly = new Character(bkgdCtx,"src/assets/bear.svg",30,350);
-const lemming = new Character(bkgdCtx,"src/assets/lemmings.svg",700,400);
+const grizzly = new Character(bkgdCtx,"../assets/bear.svg",30,350);
+grizzly.imagePath;
+const lemming = new Character(bkgdCtx,"../assets/lemmings.svg",700,400);
+lemming.imagePath;
 const grizzlyArm = new GrizzlyArm (gameCtx,50,400,70,15);
 const score = new Score(uiCtx,0);
 const gameEnvironment= new GameEnvironment(bkgdCtx);

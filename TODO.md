@@ -1,33 +1,41 @@
-uploader sur github
-faire l'hébergement sur s3
-faire la chaîne de déploiement
+# TODO
+
+## Ops
+
+faire la chaîne de déploiement (gestion des assets svg avec vite ?)
+
+## Communication
+
 faire un site
 gérer le feedback
-
 demander du peer review
 
+## UX 
+
+Rendre le jeu mobile friendly (gérer les contrôles tactiles sur mobile)
+
+## Artwork
+
+agrandir les assets
 Travailler les assets (Grizzly, Lemmings, poisson,sapins,rochers, grotte)
 Faire du des effets de sons
 Faire de la musiques
 Ajouter du juicy
 
-travailler le css pour en faire une fenêtre ouvert du chalet
-css flex pour mettre l'aide et le titre à côté du canvas
-rendre le jeu mobile friendly
-gérer les contrôles tactiles sur mobile
+## Game features
 
 gérer les collisions
-faire rebondir sur le sol les éclats
-réaliser des explosions
-permettre de multiples particules en parallèles (classe fusée ?)
 
 augmenter le score
 gérer des vies
-faire un game over (avec un tapti qui débarque sur la fenêtre)
-agrandir les assets
+faire un game over (avec un tapouti qui débarque sur la fenêtre)
 
 animer le groupe de lemmings
 animer individuellement les lemmings
+
+faire rebondir sur le sol les éclats
+réaliser des explosions
+permettre de multiples particules en parallèles (classe fusée ?)
 
 faire varier les valeurs initiales avec de l'aléa
 avoir une interface pour pouvoir jouer avec les paramètres
@@ -37,3 +45,4 @@ créer des obstacles
 créer des niveaux
 créer un scrolling du paysage
 
+idée de fin de tableau : course poursuite

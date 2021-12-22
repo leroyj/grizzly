@@ -4,7 +4,7 @@ h1 {
 }
 canvas { 
     position: absolute; 
-    outline: rgb(70, 35, 7) 3px solid;
+    outline: rgb(70, 35, 7) 20px outset;
 }
 #ui-layer { 
     z-index: 3;

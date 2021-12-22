@@ -197,8 +197,8 @@ export class Projectile {
         this.yInitialSpeedVector=yInitialSpeedVector;
         this.timestep=timestep;
         this.sprite = new Image();
-        this.imagePath = "src/assets/fish.png";
-        this.sprite.src = "src/assets/fish.png";
+        this.imagePath = "../assets/fish.png";
+        this.sprite.src = "../assets/fish.png";
         console.log(this.sprite + " - " + this.xCurrentPosition  + " - " +  this.yCurrentPosition)
         this.animate = () => {
             this.draw();

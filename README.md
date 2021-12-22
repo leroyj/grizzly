@@ -1,6 +1,7 @@
 # Grizzy et les Lemmings
 
 ![screenshot](https://github.com/leroyj/grizzly/blob/main/src/assets/screenshot.png?raw=true)
+
 ## Intent
 
 This game is a fan art inspired by the animation serie Grizzly and the Lemmings from the talented french [Studio Hari](https://www.studiohari.com/).
