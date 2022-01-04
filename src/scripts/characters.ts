@@ -1,3 +1,4 @@
+import fishUrl from '../assets/fish.png';
 
 export class Character {
     /**
@@ -197,13 +198,13 @@ export class Projectile {
         this.yInitialSpeedVector=yInitialSpeedVector;
         this.timestep=timestep;
         this.sprite = new Image();
-        this.imagePath = "../assets/fish.png";
-        this.sprite.src = "../assets/fish.png";
+        this.imagePath = fishUrl;
+        this.sprite.src = fishUrl;
         console.log(this.sprite + " - " + this.xCurrentPosition  + " - " +  this.yCurrentPosition)
         this.animate = () => {
             this.draw();
             this.update();
-            if (this.yNextPosition<0 || this.yNextPosition>400 || this.xNextPosition>800 || this.xNextPosition<0) {
+            if (this.yNextPosition<-100 || this.yNextPosition>400 || this.xNextPosition>800 || this.xNextPosition<0) {
                 window.cancelAnimationFrame(this.reqId);
                 this.draw();
             } else {
@@ -229,11 +230,7 @@ export class Projectile {
 
     draw () {
         this.context.clearRect(this.xCurrentPosition-32,this.yCurrentPosition-32,64,64 );
-        if (this.yNextPosition<0 || this.yNextPosition>400   || this.xNextPosition>800 || this.xNextPosition<0) {
-            this.drawProjectile(this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
-        } else {
-            this.drawProjectile(this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
-        }
+        this.drawProjectile(this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
     }
 
     drawProjectile(x:number, y:number, r:number, step:number) {
@@ -241,14 +238,14 @@ export class Projectile {
         this.context.drawImage(this.sprite, 128*step, 0, 128, 128, x-64*s, y-64*s, 128*s, 128 *s);
     }
 
-    animate() {
-        this.draw();
+     animate() {
+/*         this.draw();
         this.update();
-        if (this.yNextPosition<0 || this.yNextPosition>400 || this.xNextPosition>800 || this.xNextPosition<0) {
+        if (this.yNextPosition<-100 || this.yNextPosition>400 || this.xNextPosition>800 || this.xNextPosition<0) {
             window.cancelAnimationFrame(this.reqId);
         } else {
             this.reqId=requestAnimationFrame(this.animate);
-        }
+        } */
     }
 }
 

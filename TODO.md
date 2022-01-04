@@ -10,7 +10,7 @@ faire un site
 gérer le feedback
 demander du peer review
 
-## UX 
+## UX
 
 Rendre le jeu mobile friendly (gérer les contrôles tactiles sur mobile)
 

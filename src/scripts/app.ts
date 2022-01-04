@@ -1,11 +1,23 @@
 import { GameEnvironment } from './gameEnvironment';
 import { GrizzlyArm, Character, Score } from "./characters";
+import soundUrl from '../assets/grizzly-theme.mp4';
+import bearUrl from '../assets/grizzly.png';
+import lemmingsUrl from '../assets/lemming.png';
+import landscapeUrl from '../assets/landscape.png';
+
 
 function reinitialize() {
   grizzlyArm.initialize(50,400,70,15);
   score.initialize(0);
   grizzlyArm.draw();
 }
+
+var sound      = document.createElement('audio');
+sound.id       = 'audio-player';
+sound.controls = true;
+sound.loop     = true;
+sound.src      = soundUrl;
+document.getElementById('music-player')!.appendChild(sound);
 
 const uiCanvas = <HTMLCanvasElement>document.getElementById('ui-layer');
 const uiCtx = uiCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: No ui context")})();
@@ -14,16 +26,15 @@ const gameCtx = gameCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: N
 const bkgCanvas = <HTMLCanvasElement>document.getElementById('background-layer')
 const bkgdCtx = bkgCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: No background context")})();
 
-const grizzly = new Character(bkgdCtx,"../assets/bear.svg",30,350);
+const gameEnvironment= new GameEnvironment(bkgdCtx,[800,600],landscapeUrl);
+const grizzly = new Character(bkgdCtx,bearUrl,30,350);
 grizzly.imagePath;
-const lemming = new Character(bkgdCtx,"../assets/lemmings.svg",700,400);
+const lemming = new Character(bkgdCtx,lemmingsUrl,700,400);
 lemming.imagePath;
 const grizzlyArm = new GrizzlyArm (gameCtx,50,400,70,15);
 const score = new Score(uiCtx,0);
-const gameEnvironment= new GameEnvironment(bkgdCtx);
 
-gameEnvironment.drawBackground();
-  score.draw();
+score.draw();
 grizzlyArm.draw();
 
 window.addEventListener("keydown", function (event) {
