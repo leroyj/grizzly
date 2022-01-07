@@ -16,10 +16,10 @@ Rendre le jeu mobile friendly (gérer les contrôles tactiles sur mobile)
 
 ## Artwork
 
-agrandir les assets
-Travailler les assets (Grizzly, Lemmings, poisson,sapins,rochers, grotte)
+X agrandir les assets
+X Travailler les assets (Grizzly, Lemmings, poisson,sapins,rochers, grotte)
 Faire du des effets de sons
-Faire de la musiques
+X Faire de la musiques
 Ajouter du juicy
 
 ## Game features
@@ -42,7 +42,12 @@ avoir une interface pour pouvoir jouer avec les paramètres
 OK remplir les trous ?
 
 créer des obstacles
+Gérer le vent (ventilateur des lemmings) ou la glace (glissade)
 créer des niveaux
 créer un scrolling du paysage
 
 idée de fin de tableau : course poursuite
+
+## Dev
+
+rendre le code plus propre

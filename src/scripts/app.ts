@@ -27,6 +27,7 @@ const bkgCanvas = <HTMLCanvasElement>document.getElementById('background-layer')
 const bkgdCtx = bkgCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: No background context")})();
 
 const gameEnvironment= new GameEnvironment(bkgdCtx,[800,600],landscapeUrl);
+gameEnvironment.canvasSize;
 const grizzly = new Character(bkgdCtx,bearUrl,30,350);
 grizzly.imagePath;
 const lemming = new Character(bkgdCtx,lemmingsUrl,700,400);

@@ -1,6 +1,14 @@
 h1 {
     color: rgb(82, 44, 15);
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    /*font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;*/
+    font-family: 'Slackey', cursive;
+    font-size:xx-large;
+}
+#footer {
+    color: rgb(46, 24, 7);
+    /*font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;*/
+    font-family: sans-serif;
+    font-size:xx-small;
 }
 canvas { 
     position: absolute; 
@@ -23,10 +31,14 @@ ul {
 body {
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#d38526+0,ad7316+12,7c4c1c+21,d38526+23,966813+36,895311+46,d38526+50,ad7316+59,7c4c1c+71,d38526+74,a37535+87,935011+100 */
     background: #d38526; /* Old browsers */
-    background: -moz-linear-gradient(top,  hsla(33,69%,49%,1) 0%, hsla(37,77%,38%,1) 12%, hsla(30,63%,30%,1) 21%, hsla(33,69%,49%,1) 23%, hsla(39,78%,33%,1) 36%, hsla(33,78%,30%,1) 46%, hsla(33,69%,49%,1) 50%, hsla(37,77%,38%,1) 59%, hsla(30,63%,30%,1) 71%, hsla(33,69%,49%,1) 74%, hsla(35,51%,42%,1) 87%, hsla(30,63%,30%,1) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  hsla(33,69%,49%,1) 0%,hsla(37,77%,38%,1) 12%,hsla(30,63%,30%,1) 21%,hsla(33,69%,49%,1) 23%,hsla(39,78%,33%,1) 36%,hsla(33,78%,30%,1) 46%,hsla(33,69%,49%,1) 50%,hsla(37,77%,38%,1) 59%,hsla(30,63%,30%,1) 71%,hsla(33,69%,49%,1) 74%,hsla(35,51%,42%,1) 87%,hsla(30,63%,30%,1) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  hsla(33,69%,49%,1) 0%,hsla(37,77%,38%,1) 12%,hsla(30,63%,30%,1) 21%,hsla(33,69%,49%,1) 23%,hsla(39,78%,33%,1) 36%,hsla(33,78%,30%,1) 46%,hsla(33,69%,49%,1) 50%,hsla(37,77%,38%,1) 59%,hsla(30,63%,30%,1) 71%,hsla(33,69%,49%,1) 74%,hsla(35,51%,42%,1) 87%,hsla(30,63%,30%,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: -moz-linear-gradient(top,  hsla(30,63%,30%,1) 0%, hsla(33,69%,49%,1) 1%, hsla(37,77%,38%,1) 12%, hsla(30,63%,30%,1) 21%, hsla(33,69%,49%,1) 23%, hsla(39,78%,33%,1) 36%, hsla(33,78%,30%,1) 46%, hsla(33,69%,49%,1) 50%, hsla(37,77%,38%,1) 59%, hsla(30,63%,30%,1) 71%, hsla(33,69%,49%,1) 74%, hsla(35,51%,42%,1) 87%, hsla(30,63%,30%,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  hsla(30,63%,30%,1) 0%, hsla(33,69%,49%,1) 1%,hsla(37,77%,38%,1) 12%,hsla(30,63%,30%,1) 21%,hsla(33,69%,49%,1) 23%,hsla(39,78%,33%,1) 36%,hsla(33,78%,30%,1) 46%,hsla(33,69%,49%,1) 50%,hsla(37,77%,38%,1) 59%,hsla(30,63%,30%,1) 71%,hsla(33,69%,49%,1) 74%,hsla(35,51%,42%,1) 87%,hsla(30,63%,30%,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  hsla(30,63%,30%,1) 0%, hsla(33,69%,49%,1) 1%,hsla(37,77%,38%,1) 12%,hsla(30,63%,30%,1) 21%,hsla(33,69%,49%,1) 23%,hsla(39,78%,33%,1) 36%,hsla(33,78%,30%,1) 46%,hsla(33,69%,49%,1) 50%,hsla(37,77%,38%,1) 59%,hsla(30,63%,30%,1) 71%,hsla(33,69%,49%,1) 74%,hsla(35,51%,42%,1) 87%,hsla(30,63%,30%,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d38526', endColorstr='#935011',GradientType=0 ); /* IE6-9 */
+    font-family: 'Luxurious Roman', cursive;
+    font-size:large;
+    color: rgb(82, 44, 15);
+    text-shadow: #FC0 1px 0 10px;
 }
 
 .wrapper {

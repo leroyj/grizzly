@@ -204,7 +204,7 @@ export class Projectile {
         this.animate = () => {
             this.draw();
             this.update();
-            if (this.yNextPosition<-100 || this.yNextPosition>400 || this.xNextPosition>800 || this.xNextPosition<0) {
+            if (this.yNextPosition<-100 || this.yNextPosition>500 || this.xNextPosition>800 || this.xNextPosition<0) {
                 window.cancelAnimationFrame(this.reqId);
                 this.draw();
             } else {
