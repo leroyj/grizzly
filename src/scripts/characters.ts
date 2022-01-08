@@ -1,47 +1,50 @@
+import { JsonCharacter } from "./game";
 import fishUrl from '../assets/fish.png';
+import { Keyboarder } from "./keyboarder"
 
 export class Character {
+    name:string;
+    imagePath:string;
     /**
     * xPosition  x position of the character picture on the Canvas
     */
-    xPosition!:number;
+    positionX:number;
     /**
     *  yPosition  y position of the character picture on the Canvas
     */
-    yPosition!:number;
+    positionY:number;
     /**
     *  image  character picture to render on the Canvas
     */
-    image!:HTMLImageElement;
-    imagePath!:string;
-    context!:CanvasRenderingContext2D;
+    armObject:GrizzlyArm|null;
 
-    constructor (context:CanvasRenderingContext2D, imagePath:string,
-                xPosition:number, yPosition:number) {
-        this.initialize(context, xPosition, yPosition, imagePath);
-    }
+    image!:HTMLImageElement; //TOFIX: type
 
-    initialize (context:CanvasRenderingContext2D,xPosition:number, yPosition:number, imagePath:string) {
-        this.xPosition=xPosition;
-        this.yPosition=yPosition;
-        this.imagePath=imagePath;
-        this.context=context
-        this.image = new Image();
-        this.image.src = imagePath;
-        console.log(this.image + " - " + this.xPosition  + " - " +  this.yPosition)
-        this.draw = () => {
-            console.log("This is inside:" + this);
-            console.log(this.image + " - " + this.xPosition  + " - " +  this.yPosition)
-            this.context.drawImage(this.image, this.xPosition, this.yPosition);    
+
+    constructor (character:JsonCharacter) {
+        this.name=character.name;
+        this.imagePath=character.imagePath;
+        this.positionX=character.positionX;
+        this.positionY=character.positionY;
+        if (character.arm) {
+            this.armObject=new GrizzlyArm(this.positionX, this.positionY+100, character.armAngle, character.armPower);
+            console.log("arm created");
+            console.log(this.armObject);
+        } else {
+            this.armObject=null;
         }
-        this.image.onload = this.draw;
     }
 
-    draw () {
-        console.log("This is :" + this);
-        console.log(this.image + " - " + this.xPosition  + " - " +  this.yPosition)
-        this.context.drawImage(this.image, this.xPosition, this.yPosition);
+    update (keyboarder:Keyboarder) {
+        this.armObject?.update(keyboarder);
     }
+
+    draw (context:CanvasRenderingContext2D) {
+//        console.log(this.image);
+        context.drawImage(this.image,this.positionX,this.positionY);
+        this.armObject?.draw(context);
+    }
+
 }
 
 export class GrizzlyArm {
@@ -68,12 +71,12 @@ export class GrizzlyArm {
     /**
     *  ySpeedVector  y position of the arm 
     */
-     yInitialSpeedVector!:number;      
+    yInitialSpeedVector!:number;
+
+    projectile:Projectile|null=null;
  
-     constructor (public context:CanvasRenderingContext2D,
-                xPosition:number, yPosition:number, 
-                Angle:number, Power:number
-        ) {
+    constructor (xPosition:number, yPosition:number, 
+                Angle:number, Power:number) {
         this.initialize(xPosition, yPosition, Angle, Power);
         this.computeSpeedVector();
      }
@@ -105,50 +108,55 @@ export class GrizzlyArm {
     /**
     *  Draw Grizzly arm
     */
-     draw() {
+     draw(context:CanvasRenderingContext2D) {
         this.computeSpeedVector();
-        this.context.clearRect(0,0,800, 600);
-        this.context.save();
-        console.log("draw vector");
-        this.context.beginPath();
-        this.context.strokeStyle = 'black';
-        this.context.moveTo(this.xPosition, this.yPosition);
-        this.context.lineTo(50+this.xInitialSpeedVector,400-this.yInitialSpeedVector);
-        this.context.lineTo(50+this.xInitialSpeedVector-5,400-this.yInitialSpeedVector);
-        this.context.stroke();
-        this.context.restore();
+        //context.clearRect(0,0,800, 600);
+        context.save();
+        context.beginPath();
+        context.strokeStyle = 'black';
+        context.moveTo(this.xPosition, this.yPosition);
+        context.lineTo(50+this.xInitialSpeedVector,400-this.yInitialSpeedVector);
+        context.lineTo(50+this.xInitialSpeedVector-5,400-this.yInitialSpeedVector);
+        context.stroke();
+        context.restore();
+        this.projectile?.draw(context);
+    }
+
+    update(keyboarder:Keyboarder) {
+        keyboarder.keyState.DOWN && this.lower();        
+        keyboarder.keyState.UP && this.higher();
+        keyboarder.keyState.LEFT && this.powerDown();
+        keyboarder.keyState.RIGHT && this.powerUp();
+        keyboarder.keyState.SPACE && this.throwProjectile();
+        this.projectile?.update();
     }
 
     higher() {
         if (this.Angle < 120) {
             this.Angle+=4;
-            this.draw();
         }
       }
       
     lower() {
         if (this.Angle > 10) {
             this.Angle-=4;
-            this.draw();
         }
       }
       
     powerUp() {
         if (this.Power < 18) {
             this.Power++;
-          this.draw();
         }
       }
       
     powerDown() {
         if (this.Power > 8) {
             this.Power--;
-          this.draw();
         }
       }
     
     throwProjectile() {
-        return new Projectile (this.context,
+        this.projectile = new Projectile (
                                 this.xPosition, this.yPosition,
                                 this.xPosition, this.yPosition,
                                 this.xInitialSpeedVector, this.yInitialSpeedVector,
@@ -169,27 +177,25 @@ export class Projectile {
     timestep!:number;
     sprite!:HTMLImageElement;
     imagePath!:string;
-    context!:CanvasRenderingContext2D;
+    //context!:CanvasRenderingContext2D;
     reqId:number=0;
     step:number=0;
 
-    constructor(context:CanvasRenderingContext2D,
-                xCurrentPosition:number, yCurrentPosition:number,
+    constructor(xCurrentPosition:number, yCurrentPosition:number,
                 xNextPosition:number, yNextPostition:number,
                 xInitialSpeedVector:number, yInitialSpeedVector:number,
                 timestep:number
                 ) {
-        this.initialize(context,xCurrentPosition,yCurrentPosition,
+        this.initialize(xCurrentPosition,yCurrentPosition,
                         xNextPosition,yNextPostition,
                         xInitialSpeedVector,yInitialSpeedVector,
                         timestep);
     }
 
-    initialize(context:CanvasRenderingContext2D,xCurrentPosition:number, yCurrentPosition:number,
+    initialize(xCurrentPosition:number, yCurrentPosition:number,
             xNextPosition:number, yNextPosition:number,
             xInitialSpeedVector:number, yInitialSpeedVector:number,
             timestep:number) {
-        this.context=context;
         this.xCurrentPosition=xCurrentPosition;
         this.yCurrentPosition=yCurrentPosition;
         this.xNextPosition=xNextPosition;
@@ -201,19 +207,10 @@ export class Projectile {
         this.imagePath = fishUrl;
         this.sprite.src = fishUrl;
         console.log(this.sprite + " - " + this.xCurrentPosition  + " - " +  this.yCurrentPosition)
-        this.animate = () => {
-            this.draw();
-            this.update();
-            if (this.yNextPosition<-100 || this.yNextPosition>500 || this.xNextPosition>800 || this.xNextPosition<0) {
-                window.cancelAnimationFrame(this.reqId);
-                this.draw();
-            } else {
-                this.reqId=requestAnimationFrame(this.animate);
-            }
-        }
-        this.sprite.onload = this.animate;
-        this.context.imageSmoothingEnabled = false;
-        this.context.moveTo(this.xCurrentPosition,this.yCurrentPosition);
+        this.sprite.onload = () => {};
+//        this.sprite.onload = this.animate.bind(this);
+//        this.context.imageSmoothingEnabled = false;
+//        this.context.moveTo(this.xCurrentPosition,this.yCurrentPosition);
     }
 
     update () {
@@ -228,25 +225,26 @@ export class Projectile {
             this.step -= 8;
     } 
 
-    draw () {
-        this.context.clearRect(this.xCurrentPosition-32,this.yCurrentPosition-32,64,64 );
-        this.drawProjectile(this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
+    draw (context:CanvasRenderingContext2D) {
+        context.clearRect(this.xCurrentPosition-32,this.yCurrentPosition-32,64,64 );
+        this.drawProjectile(context,this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
     }
 
-    drawProjectile(x:number, y:number, r:number, step:number) {
+    drawProjectile(context:CanvasRenderingContext2D,x:number, y:number, r:number, step:number) {
         var s =r/8;
-        this.context.drawImage(this.sprite, 128*step, 0, 128, 128, x-64*s, y-64*s, 128*s, 128 *s);
+        context.drawImage(this.sprite, 128*step, 0, 128, 128, x-64*s, y-64*s, 128*s, 128 *s);
     }
 
-     animate() {
-/*         this.draw();
+/*     animate() {
+        this.draw(context);
         this.update();
         if (this.yNextPosition<-100 || this.yNextPosition>400 || this.xNextPosition>800 || this.xNextPosition<0) {
             window.cancelAnimationFrame(this.reqId);
+            this.draw(context);
         } else {
             this.reqId=requestAnimationFrame(this.animate);
-        } */
-    }
+        } 
+    } */
 }
 
 export class Score {

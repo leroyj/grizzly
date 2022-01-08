@@ -1,0 +1,25 @@
+{
+    "levelLandscapeImage":"/landscape.png",
+    "levelSound":"/grizzly-theme.mp4",
+    "characterList":
+        [
+            {
+                "name": "Grizzly",
+                "imagePath": "/grizzly.png",
+                "positionX": 30,
+                "positionY": 350,
+                "arm":true,
+                "armAngle": 70,
+                "armPower": 15
+            },
+            {
+                "name": "Lemming",
+                "imagePath": "/lemming.png",
+                "positionX": 700,
+                "positionY": 400,
+                "arm":false,
+                "armAngle": 0,
+                "armPower": 0
+            }
+        ]
+}
