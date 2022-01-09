@@ -41,8 +41,8 @@ export class Character {
 
     draw (context:CanvasRenderingContext2D) {
 //        console.log(this.image);
-        context.drawImage(this.image,this.positionX,this.positionY);
         this.armObject?.draw(context);
+        context.drawImage(this.image,this.positionX,this.positionY);
     }
 
 }
@@ -110,7 +110,7 @@ export class GrizzlyArm {
     */
      draw(context:CanvasRenderingContext2D) {
         this.computeSpeedVector();
-        //context.clearRect(0,0,800, 600);
+        context.clearRect(0,0,800, 600);
         context.save();
         context.beginPath();
         context.strokeStyle = 'black';
@@ -119,7 +119,6 @@ export class GrizzlyArm {
         context.lineTo(50+this.xInitialSpeedVector-5,400-this.yInitialSpeedVector);
         context.stroke();
         context.restore();
-        this.projectile?.draw(context);
     }
 
     update(keyboarder:Keyboarder) {
@@ -180,6 +179,7 @@ export class Projectile {
     //context!:CanvasRenderingContext2D;
     reqId:number=0;
     step:number=0;
+    ready:boolean=false;
 
     constructor(xCurrentPosition:number, yCurrentPosition:number,
                 xNextPosition:number, yNextPostition:number,
@@ -207,27 +207,35 @@ export class Projectile {
         this.imagePath = fishUrl;
         this.sprite.src = fishUrl;
         console.log(this.sprite + " - " + this.xCurrentPosition  + " - " +  this.yCurrentPosition)
-        this.sprite.onload = () => {};
+        this.sprite.onload = () => {this.ready=true; console.log("onload done")};
 //        this.sprite.onload = this.animate.bind(this);
 //        this.context.imageSmoothingEnabled = false;
 //        this.context.moveTo(this.xCurrentPosition,this.yCurrentPosition);
     }
 
     update () {
-        this.xCurrentPosition=this.xNextPosition;
-        this.yCurrentPosition=this.yNextPosition;
-        this.xNextPosition=Math.round(this.xInitialSpeedVector*this.timestep+this.xCurrentPosition);
-        this.yNextPosition=Math.round(5*this.timestep*this.timestep-this.yInitialSpeedVector*this.timestep+this.yCurrentPosition);
-        console.log("t:"+this.timestep+" x:"+this.xNextPosition+" y:"+this.yNextPosition+" oldx:"+this.xCurrentPosition+" oldy:"+this.yCurrentPosition)
-        this.timestep+=0.1;
-        this.step += 0.3 ;
-        if (this.step >= 8)
-            this.step -= 8;
+        if (this.ready) {
+            if (this.yNextPosition<-100 || this.yNextPosition>500 || this.xNextPosition>800 || this.xNextPosition<0) {
+                this.ready=false;
+            } else {
+                this.xCurrentPosition=this.xNextPosition;
+                this.yCurrentPosition=this.yNextPosition;
+                this.xNextPosition=Math.round(this.xInitialSpeedVector*this.timestep+this.xCurrentPosition);
+                this.yNextPosition=Math.round(5*this.timestep*this.timestep-this.yInitialSpeedVector*this.timestep+this.yCurrentPosition);
+                console.log("t:"+this.timestep+" x:"+this.xNextPosition+" y:"+this.yNextPosition+" oldx:"+this.xCurrentPosition+" oldy:"+this.yCurrentPosition)
+                this.timestep+=0.1;
+                this.step += 0.3 ;
+                if (this.step >= 8)
+                    this.step -= 8;
+            };
+        }
     } 
 
     draw (context:CanvasRenderingContext2D) {
-        context.clearRect(this.xCurrentPosition-32,this.yCurrentPosition-32,64,64 );
-        this.drawProjectile(context,this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
+        if (this.ready) {
+            context.clearRect(this.xCurrentPosition-32,this.yCurrentPosition-32,64,64 );
+            this.drawProjectile(context,this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
+        }
     }
 
     drawProjectile(context:CanvasRenderingContext2D,x:number, y:number, r:number, step:number) {
@@ -250,7 +258,7 @@ export class Projectile {
 export class Score {
     score!:number;
 
-    constructor(public context:CanvasRenderingContext2D, score:number){
+    constructor(score:number){
         this.initialize(score);
     }
 
@@ -258,12 +266,12 @@ export class Score {
         this.score=score;
     }
 
-    up(points:number) {
+    update(points:number) {
         this.score+=points;
     }
 
-    draw() {
-        this.context.font = '48px sans-serif';
-        this.context.strokeText(this.score.toString(), 20, 60);
+    draw(context:CanvasRenderingContext2D) {
+        context.font = '48px sans-serif';
+        context.strokeText(this.score.toString(), 20, 60);
       };    
 }

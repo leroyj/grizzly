@@ -1,6 +1,6 @@
 import { JsonLevel } from "./game";
 //import { GrizzlyArm, Character, Score } from "./characters";
-import { Character } from "./characters";
+import { Character, Score } from "./characters";
 import { Keyboarder } from "./keyboarder";
 
 export class GameEnvironment {
@@ -8,6 +8,11 @@ export class GameEnvironment {
   characterList:Character[]=[];
   levelLandscapeImage!:HTMLImageElement;
   keyboarder:Keyboarder;
+  reqId:number=0;
+  projectileCtx:CanvasRenderingContext2D;
+  uiCtx:CanvasRenderingContext2D;
+  score:Score;
+  
 
   constructor(level:JsonLevel) {
     this.loadCharacters(level);
@@ -15,6 +20,11 @@ export class GameEnvironment {
     this.keyboarder = new Keyboarder();
     this.loadCharactersImages();
     this.loadSound(level.levelSound);
+    const projectileCanvas = <HTMLCanvasElement>document.getElementById('projectile-layer');
+    this.projectileCtx = projectileCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: No game context")})();
+    const uiCanvas = <HTMLCanvasElement>document.getElementById('ui-layer');
+    this.uiCtx = uiCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: No ui context")})();
+    this.score = new Score(0);
   }
 
   loadCharacters (level:JsonLevel) {
@@ -57,27 +67,37 @@ export class GameEnvironment {
   }
 
   initialize () {
-  /*     const uiCanvas = <HTMLCanvasElement>document.getElementById('ui-layer');
-    const uiCtx = uiCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: No ui context")})();*/
-
     //draw character image
     const gameCanvas = <HTMLCanvasElement>document.getElementById('game-layer');
     let gameSize = { x: gameCanvas.width, y: gameCanvas.height }
     const gameCtx = gameCanvas.getContext('2d') ?? (() => {throw new Error("ERROR: No game context")})();
 
-
-
     let animate = () => {
-      // Update game state.
-      this.update();
-    
       // Draw game bodies.
       this.draw(gameCtx, gameSize);
     
+      // Update game state.
+      this.update();
+    
       // Queue up the next call to tick with the browser.
-      requestAnimationFrame(animate);
+      if (this.keyboarder.keyState.ESCAPE) {
+        window.cancelAnimationFrame(this.reqId);
+        this.draw(gameCtx, gameSize);
+      } else {
+        this.reqId = requestAnimationFrame(animate);
+      }
     }
     animate();
+    /*     animate() {
+        this.draw(context);
+        this.update();
+        if (this.yNextPosition<-100 || this.yNextPosition>400 || this.xNextPosition>800 || this.xNextPosition<0) {
+            window.cancelAnimationFrame(this.reqId);
+            this.draw(context);
+        } else {
+            this.reqId=requestAnimationFrame(this.animate);
+        } 
+    } */
   }
 
   loadSound (levelSoundsrc:string){
@@ -99,11 +119,14 @@ export class GameEnvironment {
   }
 
   draw(gameCtx:CanvasRenderingContext2D,gameSize:{x:number,y:number}) {
+    const projectileCtx = this.projectileCtx;
     this.characterList.forEach((currentCharacter) =>
     {
       currentCharacter.draw(gameCtx);
+      currentCharacter.armObject?.projectile?.draw(projectileCtx);
       gameSize;
     });
+    this.score.draw(this.uiCtx);
   }
 
 /*   reinitialize() {

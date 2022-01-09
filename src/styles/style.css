@@ -17,6 +17,9 @@ canvas {
 #ui-layer { 
     z-index: 3;
 }
+#projectile-layer { 
+    z-index: 2 
+}
 #game-layer { 
     z-index: 2 
 }
