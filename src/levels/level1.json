@@ -4,7 +4,18 @@
     "characterList":
         [
             {
+                "name": "Landscape",
+                "zIndex":"1",
+                "imagePath": "/landscape.png",
+                "positionX": 0,
+                "positionY": 0,
+                "arm":false,
+                "armAngle": 0,
+                "armPower": 0
+            },
+            {
                 "name": "Grizzly",
+                "zIndex":"2",
                 "imagePath": "/grizzly.png",
                 "positionX": 30,
                 "positionY": 350,
@@ -14,12 +25,14 @@
             },
             {
                 "name": "Lemming",
+                "zIndex":"3",
                 "imagePath": "/lemming.png",
-                "positionX": 700,
-                "positionY": 400,
+                "positionX": 725,
+                "positionY": 500,
                 "arm":false,
                 "armAngle": 0,
                 "armPower": 0
             }
+
         ]
 }

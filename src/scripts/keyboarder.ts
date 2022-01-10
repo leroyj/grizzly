@@ -1,11 +1,4 @@
-export type KeyState = {
-    DOWN: boolean;
-    UP:boolean;
-    LEFT:boolean;
-    RIGHT:boolean;
-    SPACE:boolean;
-    ESCAPE:boolean;
-  };
+import { KeyState } from "./game";
 export class Keyboarder {
     keyState:KeyState= {
       DOWN:false,
@@ -18,6 +11,9 @@ export class Keyboarder {
     constructor () {
       window.addEventListener("keydown", (event) => {
         if (event.defaultPrevented) {
+          return; // Do nothing if the event was already processed
+        }
+        if (event.repeat) {
           return; // Do nothing if the event was already processed
         }
         switch (event.key) {

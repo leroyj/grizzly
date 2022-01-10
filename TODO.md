@@ -1,8 +1,8 @@
-# TODO
+# TO DO
 
 ## Ops
 
-X faire la chaîne de déploiement (gestion des assets svg avec vite)
+[X] faire la chaîne de déploiement (gestion des assets svg avec vite)
 
 ## Communication
 
@@ -17,12 +17,13 @@ Rendre le jeu mobile friendly (gérer les contrôles tactiles sur mobile)
 ## Artwork
 
 Faire un splash screen ou une intro
-X agrandir les assets
-X Travailler les assets (Grizzly, Lemmings, poisson,sapins,rochers, grotte)
+[X] agrandir les assets
+[X] Travailler les assets (Grizzly, Lemmings, poisson,sapins,rochers, grotte)
 Faire du des effets de sons
-X Faire de la musiques
+[X] Faire de la musiques
 Transformer l'aide à la manière d'un tableau de crochet accroché au mur
 Ajouter du juicy
+[X] remplir les trous
 
 ## LevelDesign
 
@@ -45,7 +46,6 @@ permettre de multiples particules en parallèles (classe fusée ?)
 
 faire varier les valeurs initiales avec de l'aléa
 avoir une interface pour pouvoir jouer avec les paramètres
-OK remplir les trous ?
 
 Gérer le vent (ventilateur des lemmings) ou la glace (glissade)
 créer des niveaux

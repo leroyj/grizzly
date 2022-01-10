@@ -1,5 +1,6 @@
 export type JsonCharacter = {
     "name": string;
+    "zIndex": string;
     "imagePath": string;
     "positionX": number;
     "positionY": number;
@@ -13,3 +14,12 @@ export type JsonLevel = {
     "levelSound": string;
     "characterList": JsonCharacter[];
 }
+
+export type KeyState = {
+    DOWN: boolean;
+    UP:boolean;
+    LEFT:boolean;
+    RIGHT:boolean;
+    SPACE:boolean;
+    ESCAPE:boolean;
+  };

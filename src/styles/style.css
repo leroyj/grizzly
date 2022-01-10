@@ -20,12 +20,6 @@ canvas {
 #projectile-layer { 
     z-index: 2 
 }
-#game-layer { 
-    z-index: 2 
-}
-#background-layer { 
-    z-index: 1 
-}
 ul {
   list-style-type: none;
   color: rgb(71, 43, 23);
