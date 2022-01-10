@@ -26,7 +26,7 @@
                 "armPower": 15
             },
             {
-                "name": "Lemming",
+                "name": "Lemming1",
                 "zIndex":"3",
                 "imagePath": "/lemming.png",
                 "positionX": 700,
@@ -37,11 +37,22 @@
                 "armPower": 0
             },
             {
-                "name": "Lemming",
+                "name": "Lemming2",
+                "zIndex":"3",
+                "imagePath": "/lemming.png",
+                "positionX": 750,
+                "positionY": 475,
+                "moveBehavior": "MoveByBounce",
+                "arm":false,
+                "armAngle": 0,
+                "armPower": 0
+            },
+            {
+                "name": "Lemming3",
                 "zIndex":"4",
                 "imagePath": "/lemming.png",
                 "positionX": 725,
-                "positionY": 500,
+                "positionY": 550,
                 "moveBehavior": "MoveRightLeft",
                 "arm":false,
                 "armAngle": 0,
