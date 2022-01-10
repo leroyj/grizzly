@@ -1,0 +1,38 @@
+{
+    "levelLandscapeImage":"/landscape.png",
+    "levelSound":"/grizzly-theme.mp4",
+    "characterList":
+        [
+            {
+                "name": "Landscape",
+                "zIndex":"1",
+                "imagePath": "/landscape.png",
+                "positionX": 0,
+                "positionY": 0,
+                "arm":false,
+                "armAngle": 0,
+                "armPower": 0
+            },
+            {
+                "name": "Grizzly",
+                "zIndex":"2",
+                "imagePath": "/grizzly.png",
+                "positionX": 30,
+                "positionY": 350,
+                "arm":true,
+                "armAngle": 70,
+                "armPower": 15
+            },
+            {
+                "name": "Lemming",
+                "zIndex":"3",
+                "imagePath": "/lemming.png",
+                "positionX": 725,
+                "positionY": 500,
+                "arm":false,
+                "armAngle": 0,
+                "armPower": 0
+            }
+
+        ]
+}

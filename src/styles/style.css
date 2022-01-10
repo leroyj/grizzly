@@ -17,11 +17,8 @@ canvas {
 #ui-layer { 
     z-index: 3;
 }
-#game-layer { 
+#projectile-layer { 
     z-index: 2 
-}
-#background-layer { 
-    z-index: 1 
 }
 ul {
   list-style-type: none;

@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "html-css",
         "documentation",
-        "Artwork"
+        "Artwork",
+        "core"
     ]
 }

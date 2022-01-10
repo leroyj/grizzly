@@ -1,8 +1,8 @@
-# TODO
+# TO DO
 
 ## Ops
 
-faire la chaîne de déploiement (gestion des assets svg avec vite ?)
+[X] faire la chaîne de déploiement (gestion des assets svg avec vite)
 
 ## Communication
 
@@ -16,15 +16,22 @@ Rendre le jeu mobile friendly (gérer les contrôles tactiles sur mobile)
 
 ## Artwork
 
-X agrandir les assets
-X Travailler les assets (Grizzly, Lemmings, poisson,sapins,rochers, grotte)
+Faire un splash screen ou une intro
+[X] agrandir les assets
+[X] Travailler les assets (Grizzly, Lemmings, poisson,sapins,rochers, grotte)
 Faire du des effets de sons
-X Faire de la musiques
+[X] Faire de la musiques
+Transformer l'aide à la manière d'un tableau de crochet accroché au mur
 Ajouter du juicy
+[X] remplir les trous
+
+## LevelDesign
+
+Ajouter des niveaux
 
 ## Game features
 
-gérer les collisions
+gérer les collisions/obstacle
 
 augmenter le score
 gérer des vies
@@ -39,15 +46,22 @@ permettre de multiples particules en parallèles (classe fusée ?)
 
 faire varier les valeurs initiales avec de l'aléa
 avoir une interface pour pouvoir jouer avec les paramètres
-OK remplir les trous ?
 
-créer des obstacles
 Gérer le vent (ventilateur des lemmings) ou la glace (glissade)
 créer des niveaux
 créer un scrolling du paysage
+Gérer le vol d'une poulette
+Gérer la passage d'un ignal
 
 idée de fin de tableau : course poursuite
 
 ## Dev
 
+Faire des test unitaires (calcul de la parabole, vecteur d'émission)
 rendre le code plus propre
+mieux comprendre les prototypes et les binds
+
+## Méthodologie
+
+Créer les features dans le projet git
+Les prioriser
