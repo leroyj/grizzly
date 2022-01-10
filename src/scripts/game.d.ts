@@ -4,6 +4,7 @@ export type JsonCharacter = {
     "imagePath": string;
     "positionX": number;
     "positionY": number;
+    "moveBehavior": string;
     "arm": boolean;
     "armAngle": number;
     "armPower": number;

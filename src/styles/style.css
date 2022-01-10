@@ -14,12 +14,6 @@ canvas {
     position: absolute; 
     outline: rgb(70, 35, 7) 20px outset;
 }
-#ui-layer { 
-    z-index: 3;
-}
-#projectile-layer { 
-    z-index: 2 
-}
 ul {
   list-style-type: none;
   color: rgb(71, 43, 23);

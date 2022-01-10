@@ -2,6 +2,9 @@ import { JsonCharacter } from "./game";
 import fishUrl from '../assets/fish.png';
 import { Keyboarder } from "./Keyboarder"
 import { GameObject } from "./GameObject";
+import { MoveBehavior } from "./MoveBehavior";
+import { DynamicClass } from "./DynamicClass";
+
 
 /**
  * Character Class (grizzly, lemmings...)
@@ -15,6 +18,7 @@ export class Character extends GameObject {
     armObject:GrizzlyArm|null;
     image:HTMLImageElement;
     context:CanvasRenderingContext2D;
+    moveBehavior!:MoveBehavior;
     keyboarder:Keyboarder;
 
     constructor (character:JsonCharacter,keyboarder:Keyboarder) {
@@ -26,6 +30,15 @@ export class Character extends GameObject {
         this.positionY=character.positionY;
         this.keyboarder=keyboarder;
         this.context=this.createContext();
+
+        try {
+            this.moveBehavior = new DynamicClass(character.moveBehavior, '');
+            console.log(`Type of object : ${this.moveBehavior.constructor['name']}`);
+            console.log(this.moveBehavior);
+        } catch (e) {
+            console.error(e);
+        }
+
         if (character.arm) {
             this.armObject=new GrizzlyArm(this.positionX, this.positionY+100, character.armAngle, character.armPower);
             console.log("arm created");
@@ -38,6 +51,7 @@ export class Character extends GameObject {
     }
 
     update () {
+        [this.positionX,this.positionY]=this.moveBehavior.move!(this.positionX,this.positionY);
         this.armObject?.update(this.keyboarder);
     }
 
@@ -46,6 +60,7 @@ export class Character extends GameObject {
         this.context.drawImage(this.image,this.positionX,this.positionY);
         this.armObject?.draw(this.context);
     }
+
 
 }
 

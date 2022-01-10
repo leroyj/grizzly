@@ -32,19 +32,18 @@ Ajouter des niveaux
 ## Game features
 
 gérer les collisions/obstacle
-
 augmenter le score
 gérer des vies
 faire un game over (avec un tapouti qui débarque sur la fenêtre)
 
-animer le groupe de lemmings
-animer individuellement les lemmings
+[X] animer le groupe de lemmings
+[X] animer individuellement les lemmings
 
 faire rebondir sur le sol les éclats
 réaliser des explosions
 permettre de multiples particules en parallèles (classe fusée ?)
 
-faire varier les valeurs initiales avec de l'aléa
+[X] faire varier les valeurs initiales avec de l'aléa
 avoir une interface pour pouvoir jouer avec les paramètres
 
 Gérer le vent (ventilateur des lemmings) ou la glace (glissade)

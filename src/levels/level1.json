@@ -9,6 +9,7 @@
                 "imagePath": "/landscape.png",
                 "positionX": 0,
                 "positionY": 0,
+                "moveBehavior": "MoveNot",
                 "arm":false,
                 "armAngle": 0,
                 "armPower": 0
@@ -19,6 +20,7 @@
                 "imagePath": "/grizzly.png",
                 "positionX": 30,
                 "positionY": 350,
+                "moveBehavior": "MoveNot",
                 "arm":true,
                 "armAngle": 70,
                 "armPower": 15
@@ -27,8 +29,20 @@
                 "name": "Lemming",
                 "zIndex":"3",
                 "imagePath": "/lemming.png",
+                "positionX": 700,
+                "positionY": 450,
+                "moveBehavior": "MoveNot",
+                "arm":false,
+                "armAngle": 0,
+                "armPower": 0
+            },
+            {
+                "name": "Lemming",
+                "zIndex":"4",
+                "imagePath": "/lemming.png",
                 "positionX": 725,
                 "positionY": 500,
+                "moveBehavior": "MoveRightLeft",
                 "arm":false,
                 "armAngle": 0,
                 "armPower": 0
