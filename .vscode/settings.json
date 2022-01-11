@@ -3,6 +3,7 @@
         "html-css",
         "documentation",
         "Artwork",
-        "core"
+        "core",
+        "UX"
     ]
 }

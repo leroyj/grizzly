@@ -5,13 +5,13 @@ export type JsonCharacter = {
     "positionX": number;
     "positionY": number;
     "moveBehavior": string;
-    "arm": boolean;
-    "armAngle": number;
-    "armPower": number;
+    "throwBehavior": string;
+    "throwAngle": number;
+    "throwPower": number;
+    "thrownObjectImagePath": string;
 }
 
 export type JsonLevel = {
-    "levelLandscapeImage": string;
     "levelSound": string;
     "characterList": JsonCharacter[];
 }

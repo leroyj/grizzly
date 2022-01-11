@@ -1,15 +1,14 @@
 import { JsonLevel } from "./game";
-//import { GrizzlyArm, Character, Score } from "./characters";
 import { Character } from "./characters";
 import { Score } from "./score"
 import { Keyboarder } from "./Keyboarder";
+import { GameEnv, GameObject } from "./GameObject";
 
-export class GameEnvironment {
-  characterList:Character[]=[];
+export class GameEnvironment implements GameEnv{
+  gameObjectList:GameObject[]=[];
   keyboarder:Keyboarder;
   reqId:number=0;
   score:Score;
-  
 
   constructor(level:JsonLevel, score:Score, keyboarder:Keyboarder) {
     this.keyboarder=keyboarder?? (() => {throw new Error("ERROR: No keyboarder available")})();
@@ -21,21 +20,32 @@ export class GameEnvironment {
 
   loadCharacters (level:JsonLevel) {
     level.characterList.forEach((character) => {
-      const newCharacter:Character=new Character(character,this.keyboarder);
-      this.characterList.push(newCharacter);
+      const newCharacter:Character=new Character(character,this);
+      this.gameObjectList.push(newCharacter);
     });
-    console.log("Loaded Character: "+this.characterList.length);
+    console.log("Loaded Character: "+this.gameObjectList.length);
   }
 
   loadCharactersImages () {
-    Promise.all<void>(this.characterList.map( currentCharacter =>
+    Promise.all<void>(this.gameObjectList.map( currentCharacter =>
     new Promise((resolve, reject) => {
       currentCharacter.image.onload = () => resolve();
       currentCharacter.image.onerror = reject;
       console.log("image.src:"+currentCharacter.image.src);
     })
-    )).then(this.initialize.bind(this))
+    )).then(this.waitForUserToStart.bind(this))
     .catch((error) => {console.error(error);}); //initialize as soon as all the images are loaded (asynchronous tasl)
+  }
+
+  waitForUserToStart() {
+    this.draw(); 
+    this.score.addMessage("Press ⏎ to start!");
+    window.onkeypress = (event) => {
+      if (event.key=="Enter") { 
+        this.initialize();
+        window.onkeypress=null;
+      }
+    };
   }
 
   initialize () {
@@ -67,7 +77,7 @@ export class GameEnvironment {
   }
 
   update() {
-    this.characterList.forEach((currentCharacter) =>
+    this.gameObjectList.forEach((currentCharacter) =>
     {
       currentCharacter.update();
     });
@@ -75,29 +85,26 @@ export class GameEnvironment {
   }
 
   draw() {
-    this.characterList.forEach((currentCharacter) =>
+    this.gameObjectList.forEach((currentCharacter) =>
     {
       currentCharacter.draw();
-      currentCharacter.armObject?.projectile.forEach((currentProjectile) => {
-        currentProjectile.draw();
-      });
-    this.score.draw();
+      this.score.draw();
     })
   }
 
+addGameObjectToList(gameObject:GameObject) {
+    this.gameObjectList.push(gameObject); 
+    this.score.projectileCountdown();
+ };
+
+ getKeyboarder ():Keyboarder {
+     return this.keyboarder;
+ }
 /*   reinitialize() {
     grizzlyArm.initialize(50,400,70,15);
     score.initialize(0);
     grizzlyArm.draw();
-  }
-
-const grizzlyArm = new GrizzlyArm (gameCtx,50,400,70,15);
-const score = new Score(uiCtx,0);
-
-score.draw();
-grizzlyArm.draw();
- */
-
+  }*/
 }
 
 

@@ -1,9 +1,8 @@
 import { JsonCharacter } from "./game";
-import fishUrl from '../assets/fish.png';
-import { Keyboarder } from "./Keyboarder"
-import { GameObject } from "./GameObject";
+import { GameEnv, GameObject } from "./GameObject";
 import { MoveBehavior } from "./MoveBehavior";
-import { DynamicClass } from "./DynamicClass";
+import { ThrowBehavior } from "./ThrowBehavior";
+import { MoveDynamicClass,ThrowDynamicClass } from "./DynamicClass";
 
 
 /**
@@ -15,161 +14,72 @@ export class Character extends GameObject {
     imagePath:string;
     positionX:number;
     positionY:number;
-    armObject:GrizzlyArm|null;
     image:HTMLImageElement;
     context:CanvasRenderingContext2D;
     moveBehavior!:MoveBehavior;
-    keyboarder:Keyboarder;
+    throwBehavior!:ThrowBehavior;
+    gameEnv:GameEnv;
 
-    constructor (character:JsonCharacter,keyboarder:Keyboarder) {
+    constructor (character:JsonCharacter,gameEnv:GameEnv) {
         super();
         this.name=character.name;
         this.zIndex=character.zIndex;
         this.imagePath=character.imagePath;
         this.positionX=character.positionX;
         this.positionY=character.positionY;
-        this.keyboarder=keyboarder;
+        this.gameEnv=gameEnv;
         this.context=this.createContext();
 
         try {
-            this.moveBehavior = new DynamicClass(character.moveBehavior, '');
+            this.moveBehavior = new MoveDynamicClass(character.moveBehavior, '');
             console.log(`Type of object : ${this.moveBehavior.constructor['name']}`);
             console.log(this.moveBehavior);
         } catch (e) {
             console.error(e);
         }
 
-        if (character.arm) {
-            this.armObject=new GrizzlyArm(this.positionX, this.positionY+100, character.armAngle, character.armPower);
-            console.log("arm created");
-            console.log(this.armObject);
-        } else {
-            this.armObject=null;
+        try {
+            this.throwBehavior = new ThrowDynamicClass(character.throwBehavior, this.positionX, this.positionY+100, character.throwAngle, character.throwPower, character.thrownObjectImagePath, gameEnv);
+            // constructor (positionX:number, positionY:number, 
+            //     Angle:number, Power:number,
+            //     thrownObjectImagePath:string,
+            //     gameEnv:GameEnv) {
+            //this.throwBehavior = new ThrowDynamicClass(character.throwBehavior, this.positionX, this.positionY+100, character.throwAngle, character.throwPower, character.throwObjectImagePath);
+            console.log(`Type of object : ${this.throwBehavior.constructor['name']}`);
+            console.log(this.throwBehavior);
+        } catch (e) {
+            console.error(e);
         }
+
+        // if (character.arm) {
+        //     this.armObject=new GrizzlyArm(this.positionX, this.positionY+100, character.armAngle, character.armPower);
+        //     console.log("arm created");
+        //     console.log(this.armObject);
+        // } else {
+        //     this.armObject=null;
+        // }
         this.image=new Image();
         this.image.src=character.imagePath; // with character images
     }
 
     update () {
         [this.positionX,this.positionY]=this.moveBehavior.move!(this.positionX,this.positionY);
-        this.armObject?.update(this.keyboarder);
+        this.throwBehavior?.update();
     }
 
     draw () {
         this.context.clearRect(0,0,800, 600);
         this.context.drawImage(this.image,this.positionX,this.positionY);
-        this.armObject?.draw(this.context);
+        this.throwBehavior?.draw();
     }
 
-
-}
-
-/**
- * GrizzlyArm Class that deals with setting the speed and angle of the throw
- */
-export class GrizzlyArm {
-    positionX:number; 
-    positionY:number; 
-    Angle:number; 
-    Power:number; 
-    xInitialSpeedVector!:number; 
-    yInitialSpeedVector!:number;
-    projectile:Projectile[]=[];
-    lastFire:number=new Date().valueOf();
-    fireRate=3;
-    ammunition:number=15;
- 
-    constructor (positionX:number, positionY:number, 
-                Angle:number, Power:number) {
-        this.positionX=positionX;
-        this.positionY=positionY;
-        this.Angle=Angle;
-        this.Power=Power;
-        this.computeSpeedVector();
-     }
-
-    /**
-    *  convert angle from degree to Radian
-    */
-     degToRad(degrees:number) {
-        return degrees * Math.PI / 180;
-    };
-
-    /**
-    *  projection on the x and y axis of the initial velocity vector of the Projectile
-    */
-    private computeSpeedVector() {
-        let armAngleRad = this.degToRad(this.Angle);
-        this.xInitialSpeedVector=this.Power*Math.cos(armAngleRad);
-        this.yInitialSpeedVector=this.Power*Math.sin(armAngleRad);
-    }
-
-    /**
-    *  Draw Grizzly arm
-    */
-     draw(context:CanvasRenderingContext2D) {
-        this.computeSpeedVector();
-        context.save();
-        context.beginPath();
-        context.strokeStyle = 'black';
-        context.lineWidth = 3;
-        context.setLineDash([8, 2]);
-        context.moveTo(this.positionX, this.positionY);
-        context.lineTo(this.positionX+2*this.xInitialSpeedVector,this.positionY-2*this.yInitialSpeedVector);
-        context.lineTo(this.positionX+2*this.xInitialSpeedVector-5,this.positionY-2*this.yInitialSpeedVector);
-        context.stroke();
-        context.restore();
-    }
-
-    update(keyboarder:Keyboarder) {
-        keyboarder.keyState.SPACE && this.throwProjectile() && (keyboarder.keyState.SPACE=false);
-        keyboarder.keyState.DOWN && this.lower();        
-        keyboarder.keyState.UP && this.higher();
-        keyboarder.keyState.LEFT && this.powerDown();
-        keyboarder.keyState.RIGHT && this.powerUp();
-        //console.log(this.projectile.length);
-        this.projectile.forEach( currentProjectile => {
-            currentProjectile.update()
-        });
-    }
-
-    higher() {
-        if (this.Angle < 120) { this.Angle+=1 }
-      }
-      
-    lower() {
-        if (this.Angle > 10) { this.Angle-=1 }
-      }
-      
-    powerUp() {
-        if (this.Power < 18) { this.Power+=0.1 }
-      }
-      
-    powerDown() {
-        if (this.Power > 8) { this.Power-=0.1 }
-      }
-    
-    throwProjectile() {
-        const cFire = new Date().valueOf();
-        if (((cFire - this.lastFire) / 1000 > 1/this.fireRate) && (this.ammunition>0)) {            
-            this.projectile.push(new Projectile (
-                                this.positionX, this.positionY,
-                                this.positionX, this.positionY,
-                                this.xInitialSpeedVector, this.yInitialSpeedVector,
-                                0
-            ));
-            this.ammunition-=1;
-            this.lastFire = cFire;
-        }
-        console.log("Nb of projectile in the queue: " + this.projectile.length);
-    }
 
 }
 
 /**
  * Projectile Class that deals with ballistic
  */
- export class Projectile {
+ export class Projectile extends GameObject {
 
     xCurrentPosition!:number;
     yCurrentPosition!:number;
@@ -179,7 +89,7 @@ export class GrizzlyArm {
     yInitialSpeedVector!:number;
     timestep!:number;
     sprite!:HTMLImageElement;
-    imagePath!:string;
+    thrownObjectImagePath!:string;
     context:CanvasRenderingContext2D;
     reqId:number=0;
     step:number=0;
@@ -188,31 +98,25 @@ export class GrizzlyArm {
     constructor(xCurrentPosition:number, yCurrentPosition:number,
                 xNextPosition:number, yNextPostition:number,
                 xInitialSpeedVector:number, yInitialSpeedVector:number,
-                timestep:number
+                timestep:number,
+                thrownObjectImagePath:string
                 ) {
+        super();
         this.initialize(xCurrentPosition,yCurrentPosition,
                         xNextPosition,yNextPostition,
                         xInitialSpeedVector,yInitialSpeedVector,
-                        timestep);
+                        timestep,
+                        thrownObjectImagePath);
+        this.name="projectile-"+timestep.toString();
+        this.zIndex="20";
         this.context=this.createContext();
-    }
-
-    private createContext():CanvasRenderingContext2D {
-        const canvas = document.createElement('canvas');
-        canvas.id = "Projectile-" + Math.floor(Math.random()*1000);
-        canvas.width = 800;
-        canvas.height = 600;
-        canvas.style.zIndex = "10";
-        canvas.style.position = "absolute";
-        const gameElement:Element = document.getElementById('game') ?? (() => {throw new Error("ERROR: No game Element in HTML page")})();
-        gameElement.appendChild(canvas);
-        return canvas.getContext('2d') ?? (() => {throw new Error("ERROR: No background context")})();
     }
 
     initialize(xCurrentPosition:number, yCurrentPosition:number,
             xNextPosition:number, yNextPosition:number,
             xInitialSpeedVector:number, yInitialSpeedVector:number,
-            timestep:number) {
+            timestep:number,
+            thrownObjectImagePath:string) {
         this.xCurrentPosition=xCurrentPosition;
         this.yCurrentPosition=yCurrentPosition;
         this.xNextPosition=xNextPosition;
@@ -221,8 +125,8 @@ export class GrizzlyArm {
         this.yInitialSpeedVector=yInitialSpeedVector;
         this.timestep=timestep;
         this.sprite = new Image();
-        this.imagePath = fishUrl;
-        this.sprite.src = fishUrl;
+        this.thrownObjectImagePath = thrownObjectImagePath;
+        this.sprite.src = thrownObjectImagePath;
         console.log(this.sprite + " - " + this.xCurrentPosition  + " - " +  this.yCurrentPosition)
         this.sprite.onload = () => {this.ready=true; console.log("INFO: fish image onload done")};
 //        this.sprite.onload = this.animate.bind(this);
@@ -232,7 +136,7 @@ export class GrizzlyArm {
 
     update () {
         if (this.ready) {
-            if (this.yNextPosition<-100 || this.yNextPosition>500 || this.xNextPosition>800 || this.xNextPosition<0) {
+            if (this.yNextPosition<-100 || this.yNextPosition>550 || this.xNextPosition>800 || this.xNextPosition<0) {
                 this.ready=false;
             } else {
                 this.xCurrentPosition=this.xNextPosition;

@@ -1,5 +1,4 @@
 {
-    "levelLandscapeImage":"/landscape.png",
     "levelSound":"/grizzly-theme.mp4",
     "characterList":
         [
@@ -10,9 +9,10 @@
                 "positionX": 0,
                 "positionY": 0,
                 "moveBehavior": "MoveNot",
-                "arm":false,
-                "armAngle": 0,
-                "armPower": 0
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": ""
             },
             {
                 "name": "Grizzly",
@@ -21,20 +21,22 @@
                 "positionX": 30,
                 "positionY": 350,
                 "moveBehavior": "MoveNot",
-                "arm":true,
-                "armAngle": 70,
-                "armPower": 15
+                "throwBehavior": "ThrowBalistics",
+                "throwAngle": 70,
+                "throwPower": 15,
+                "thrownObjectImagePath": "/fish.png"
             },
             {
                 "name": "Lemming1",
                 "zIndex":"3",
                 "imagePath": "/lemming.png",
                 "positionX": 700,
-                "positionY": 450,
-                "moveBehavior": "MoveNot",
-                "arm":false,
-                "armAngle": 0,
-                "armPower": 0
+                "positionY": 400,
+                "moveBehavior": "MoveByBounceRightLeft",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": ""
             },
             {
                 "name": "Lemming2",
@@ -43,9 +45,10 @@
                 "positionX": 750,
                 "positionY": 475,
                 "moveBehavior": "MoveByBounce",
-                "arm":false,
-                "armAngle": 0,
-                "armPower": 0
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": ""
             },
             {
                 "name": "Lemming3",
@@ -54,9 +57,10 @@
                 "positionX": 725,
                 "positionY": 550,
                 "moveBehavior": "MoveRightLeft",
-                "arm":false,
-                "armAngle": 0,
-                "armPower": 0
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": ""
             }
 
         ]

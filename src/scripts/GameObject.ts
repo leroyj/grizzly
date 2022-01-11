@@ -1,6 +1,9 @@
+import { Keyboarder } from "./Keyboarder";
+
 export abstract class GameObject {
     name:string="";
     zIndex:string="";
+    image!:HTMLImageElement;
 //    abstract initialize():void;
     abstract update():void;
     abstract draw():void;
@@ -18,4 +21,11 @@ export abstract class GameObject {
         gameElement.appendChild(canvas);
         return canvas.getContext('2d') ?? (() => {throw new Error("ERROR: No background context")})();
     };
+}
+
+export interface GameEnv {
+    gameObjectList:GameObject[];
+    keyboarder:Keyboarder;
+    addGameObjectToList(gameObject:GameObject):void;
+    getKeyboarder ():Keyboarder;
 }
