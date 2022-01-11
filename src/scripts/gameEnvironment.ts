@@ -95,6 +95,13 @@ export class GameEnvironment implements GameEnv{
 addGameObjectToList(gameObject:GameObject) {
     this.gameObjectList.push(gameObject); 
     this.score.projectileCountdown();
+    this.cleanUpObjectList();
+ };
+
+ cleanUpObjectList () {
+  console.log("ObjectList length before cleaning: "+this.gameObjectList.length);
+  this.gameObjectList=this.gameObjectList.filter(currentObject => currentObject.outOfGame === false)
+  console.log("ObjectList length after cleaning: "+this.gameObjectList.length);
  };
 
  getKeyboarder ():Keyboarder {

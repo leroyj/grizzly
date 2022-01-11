@@ -83,6 +83,12 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
     *  Draw Grizzly arm
     */
      draw() {
+        const tox = this.positionX+50*this.xNormalizedSpeedVector;
+        const toy = this.positionY-50*this.yNormalizedSpeedVector;
+        const dx = tox - this.positionX;
+        const dy = toy - this.positionY;
+        var angle = Math.atan2(dy, dx);
+
         this.computeSpeedVector();
         this.context.clearRect(0,0,800, 600);
         this.context.save();
@@ -91,7 +97,11 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
         this.context.lineWidth = 3;
         this.context.setLineDash([8, 2]);
         this.context.moveTo(this.positionX, this.positionY);
-        this.context.lineTo(this.positionX+50*this.xNormalizedSpeedVector,this.positionY-50*this.yNormalizedSpeedVector);
+        this.context.lineTo(tox,toy);
+        const headlen = 10;
+        this.context.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
+        this.context.moveTo(tox, toy);
+        this.context.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
         this.context.stroke();
         this.context.restore();
         this.context.save();

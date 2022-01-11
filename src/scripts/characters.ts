@@ -4,7 +4,6 @@ import { MoveBehavior } from "./MoveBehavior";
 import { ThrowBehavior } from "./ThrowBehavior";
 import { MoveDynamicClass,ThrowDynamicClass } from "./DynamicClass";
 
-
 /**
  * Character Class (grizzly, lemmings...)
  */
@@ -40,24 +39,11 @@ export class Character extends GameObject {
 
         try {
             this.throwBehavior = new ThrowDynamicClass(character.throwBehavior, this.positionX, this.positionY+100, character.throwAngle, character.throwPower, character.thrownObjectImagePath, gameEnv);
-            // constructor (positionX:number, positionY:number, 
-            //     Angle:number, Power:number,
-            //     thrownObjectImagePath:string,
-            //     gameEnv:GameEnv) {
-            //this.throwBehavior = new ThrowDynamicClass(character.throwBehavior, this.positionX, this.positionY+100, character.throwAngle, character.throwPower, character.throwObjectImagePath);
             console.log(`Type of object : ${this.throwBehavior.constructor['name']}`);
             console.log(this.throwBehavior);
         } catch (e) {
             console.error(e);
         }
-
-        // if (character.arm) {
-        //     this.armObject=new GrizzlyArm(this.positionX, this.positionY+100, character.armAngle, character.armPower);
-        //     console.log("arm created");
-        //     console.log(this.armObject);
-        // } else {
-        //     this.armObject=null;
-        // }
         this.image=new Image();
         this.image.src=character.imagePath; // with character images
     }
@@ -72,8 +58,6 @@ export class Character extends GameObject {
         this.context.drawImage(this.image,this.positionX,this.positionY);
         this.throwBehavior?.draw();
     }
-
-
 }
 
 /**
@@ -129,15 +113,14 @@ export class Character extends GameObject {
         this.sprite.src = thrownObjectImagePath;
         console.log(this.sprite + " - " + this.xCurrentPosition  + " - " +  this.yCurrentPosition)
         this.sprite.onload = () => {this.ready=true; console.log("INFO: fish image onload done")};
-//        this.sprite.onload = this.animate.bind(this);
 //        this.context.imageSmoothingEnabled = false;
-//        this.context.moveTo(this.xCurrentPosition,this.yCurrentPosition);
     }
 
     update () {
         if (this.ready) {
             if (this.yNextPosition<-100 || this.yNextPosition>550 || this.xNextPosition>800 || this.xNextPosition<0) {
                 this.ready=false;
+                this.outOfGame=true;
             } else {
                 this.xCurrentPosition=this.xNextPosition;
                 this.yCurrentPosition=this.yNextPosition;

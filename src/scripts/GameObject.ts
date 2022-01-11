@@ -4,6 +4,7 @@ export abstract class GameObject {
     name:string="";
     zIndex:string="";
     image!:HTMLImageElement;
+    outOfGame:boolean=false;
 //    abstract initialize():void;
     abstract update():void;
     abstract draw():void;
