@@ -1,103 +1,166 @@
-import { JsonLevel } from "./game";
-//import { GrizzlyArm, Character, Score } from "./characters";
+import { JsonLevel } from "./JsonLevelType";
 import { Character } from "./characters";
-import { Score } from "./score"
+import { ScoreBoard } from "./ScoreBoard"
 import { Keyboarder } from "./Keyboarder";
+import { GameEnv, GameObject } from "./GameObject";
 
-export class GameEnvironment {
-  characterList:Character[]=[];
+export class GameEnvironment implements GameEnv{
+  gameObjectList:GameObject[]=[];
   keyboarder:Keyboarder;
-  reqId:number=0;
-  score:Score;
-  
+  private reqId:number=0;
+  private scoreBoard:ScoreBoard;
+  private levelCompleted:boolean;
+  private levelEndSound:string;
+  private remainingAmmunitions:number;
+  private levelName:string;
 
-  constructor(level:JsonLevel, score:Score, keyboarder:Keyboarder) {
+  constructor(level:JsonLevel, score:ScoreBoard, keyboarder:Keyboarder) {
+    this.levelCompleted=false;
     this.keyboarder=keyboarder?? (() => {throw new Error("ERROR: No keyboarder available")})();
+    this.remainingAmmunitions=99;
+    this.scoreBoard = score?? (() => {throw new Error("ERROR: No score available")})();
+    this.levelName = level.levelName;
+    score.setlevelName(level.levelName);
+    score.setRemainingAmmunition(this.remainingAmmunitions);
     this.loadCharacters(level);
     this.loadCharactersImages();
     this.loadSound(level.levelSound);
-    this.score = score;
+    this.levelEndSound=level.levelEndSound;
   }
 
-  loadCharacters (level:JsonLevel) {
+  private loadCharacters (level:JsonLevel) {
+    console.log("[loadCharacters] start to load Characters...");
     level.characterList.forEach((character) => {
-      const newCharacter:Character=new Character(character,this.keyboarder);
-      this.characterList.push(newCharacter);
+      console.log("[loadCharacters] current Character: "+character.name);
+      const newCharacter:Character=new Character(character,this);
+      console.debug("[loadCharacters] DEBUG GameEnvironment:");
+      console.debug(this);
+      this.gameObjectList.push(newCharacter);
     });
-    console.log("Loaded Character: "+this.characterList.length);
+    console.log("[loadCharacters] Loaded "+this.gameObjectList.length+" Characters!");
   }
 
-  loadCharactersImages () {
-    Promise.all<void>(this.characterList.map( currentCharacter =>
+  private loadCharactersImages () {
+    Promise.all<void>(this.gameObjectList.map( currentCharacter =>
     new Promise((resolve, reject) => {
       currentCharacter.image.onload = () => resolve();
       currentCharacter.image.onerror = reject;
-      console.log("image.src:"+currentCharacter.image.src);
+      console.debug("image.src:"+currentCharacter.image.src);
     })
-    )).then(this.initialize.bind(this))
+    )).then(this.waitForUserToStart.bind(this))
     .catch((error) => {console.error(error);}); //initialize as soon as all the images are loaded (asynchronous tasl)
   }
 
-  initialize () {
-    //draw character image
-    let animate = () => {
-      // Draw game bodies.
-      this.draw();    
-      // Update game state.
-      this.update();
-      // Queue up the next call to tick with the browser.
-      if (this.keyboarder.keyState.ESCAPE) {
-        window.cancelAnimationFrame(this.reqId);
-        this.draw();
-      } else {
-        this.reqId = requestAnimationFrame(animate);
-      }
-    }
-    animate();
-  }
-
-  loadSound (levelSoundsrc:string){
+  private loadSound (levelSoundsrc:string){
     //play sound
     let sound      = document.createElement('audio');
     sound.id       = 'audio-player';
     sound.controls = true;
+    sound.autoplay = true;
     sound.loop     = true;
     sound.src      = levelSoundsrc;
     document.getElementById('music-player')!.appendChild(sound);    
   }
 
-  update() {
-    this.characterList.forEach((currentCharacter) =>
+  private stopSound () {
+    let sound=document.getElementById('audio-player') as HTMLAudioElement?? (() => {throw new Error("ERROR: No audio-player available")})();
+    sound.pause();
+  }
+
+  private loadEndSound (){
+    var audio = new Audio(this.levelEndSound);
+    audio.play();
+  }
+
+  private waitForUserToStart() {
+    console.log("[waitForUserToStart]");
+    console.log(this);
+    this.scoreBoard.displayReadyToStart();
+    this.draw(); 
+    window.onkeypress = (event) => {
+      if (event.key=="Enter") { 
+        this.scoreBoard.resetMessageDisplayed();
+        this.initialize();
+        window.onkeypress=null;
+      }
+    };
+  }
+
+  private initialize () {
+    //draw character image
+    console.log("[initialize] Initialize animation loop")
+    let startTime:DOMHighResTimeStamp=-1;
+    let animate = (timestamp:DOMHighResTimeStamp) => {
+      if ((startTime===-1)&&(startTime = timestamp)) {
+        console.debug("[RAF] InitiateReqAnimFrame with ReqID "+this.reqId+" on startTime:"+startTime.toString()+" TimeStamp: "+timestamp);
+        this.reqId = requestAnimationFrame(animate);
+      } else {
+        let currentTime = timestamp - startTime;
+        if (!(this.keyboarder.keyState.ESCAPE)&&!(this.levelCompleted)) {
+          // Update game state.
+          this.update(currentTime);
+          // Draw game bodies.
+          this.draw();    
+          // Queue up the next call to tick with the browser.
+          this.reqId = requestAnimationFrame(animate);
+        } else {
+          console.log(this.keyboarder.keyState);
+          console.log("[RAF] Cancelled animation loop by ESCAPE: "+this.keyboarder.keyState.ESCAPE);
+          console.log("[RAF] Cancelled animation loop by levelCompleted: "+this.levelCompleted);
+          console.log("[RAF] ReqId (inside the RAF): "+this.reqId);
+          window.cancelAnimationFrame(this.reqId);
+          this.scoreBoard.displayLevelCompleted();
+          this.stopSound();
+          this.loadEndSound();
+          const event = new CustomEvent('nextLevel', { detail: this.levelName });
+          const gameElement:Element = document.getElementById('game') ?? (() => {throw new Error("ERROR: No game Element in HTML page")})();
+          gameElement.dispatchEvent(event);      
+        }
+      }
+    }
+    this.reqId = requestAnimationFrame(animate);
+  }
+
+  private update(currentTime:DOMHighResTimeStamp) {
+    this.gameObjectList.forEach((currentObject) =>
     {
-      currentCharacter.update();
+      currentObject.update(currentTime);
     });
 
   }
 
-  draw() {
-    this.characterList.forEach((currentCharacter) =>
+  private draw() {
+    this.gameObjectList.forEach((currentObject) =>
     {
-      currentCharacter.draw();
-      currentCharacter.armObject?.projectile.forEach((currentProjectile) => {
-        currentProjectile.draw();
-      });
-    this.score.draw();
+      currentObject.draw();
     })
+    this.scoreBoard.draw();
   }
 
-/*   reinitialize() {
-    grizzlyArm.initialize(50,400,70,15);
-    score.initialize(0);
-    grizzlyArm.draw();
+  addGameObjectToList(gameObject:GameObject) {
+      this.gameObjectList.push(gameObject); 
+      this.cleanUpObjectList();
+  };
+
+  private cleanUpObjectList () {
+    const lengthBeforeCleanUp:number=this.gameObjectList.length;
+    this.gameObjectList=this.gameObjectList.filter(currentObject => currentObject.outOfGame === false);
+    const lengthAfterCleanUp:number=this.gameObjectList.length;
+    console.log("[cleanUpObjectList] ObjectList length after cleaning: "+lengthAfterCleanUp+ "("+(lengthBeforeCleanUp-lengthAfterCleanUp)+" deleted)");
   }
 
-const grizzlyArm = new GrizzlyArm (gameCtx,50,400,70,15);
-const score = new Score(uiCtx,0);
+  getKeyboarder ():Keyboarder {
+      return this.keyboarder;
+  }
 
-score.draw();
-grizzlyArm.draw();
- */
+  levelcompleted(): void {
+    console.log("End Of Level!")
+    this.levelCompleted=true;
+    console.log("ReqId: "+this.reqId);
+  }
 
+  setremainingAmmunitions(remainingAmmunitions: number): void {
+      this.remainingAmmunitions=remainingAmmunitions;
+      this.scoreBoard.setRemainingAmmunition(remainingAmmunitions);
+  }
 }
-
-

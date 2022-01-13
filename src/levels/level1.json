@@ -1,6 +1,7 @@
 {
-    "levelLandscapeImage":"/landscape.png",
-    "levelSound":"/grizzly-theme.mp4",
+    "levelName":"Level 1",
+    "levelSound":"/grizzy-theme-level1.mp4",
+    "levelEndSound":"/tabodi.mp3",
     "characterList":
         [
             {
@@ -9,9 +10,12 @@
                 "imagePath": "/landscape.png",
                 "positionX": 0,
                 "positionY": 0,
-                "arm":false,
-                "armAngle": 0,
-                "armPower": 0
+                "moveBehavior": "MoveNot",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
             },
             {
                 "name": "Grizzly",
@@ -19,19 +23,51 @@
                 "imagePath": "/grizzly.png",
                 "positionX": 30,
                 "positionY": 350,
-                "arm":true,
-                "armAngle": 70,
-                "armPower": 15
+                "moveBehavior": "MoveNot",
+                "throwBehavior": "ThrowBalistics",
+                "throwAngle": 70,
+                "throwPower": 20,
+                "thrownObjectImagePath": "/fish.png",
+                "throwAmmunition": 3
             },
             {
-                "name": "Lemming",
+                "name": "Lemming1",
                 "zIndex":"3",
                 "imagePath": "/lemming.png",
+                "positionX": 700,
+                "positionY": 400,
+                "moveBehavior": "MoveByBounceRightLeft",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
+            },
+            {
+                "name": "Lemming2",
+                "zIndex":"3",
+                "imagePath": "/lemming.png",
+                "positionX": 750,
+                "positionY": 475,
+                "moveBehavior": "MoveByBounce",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
+            },
+            {
+                "name": "Lemming3",
+                "zIndex":"4",
+                "imagePath": "/lemming.png",
                 "positionX": 725,
-                "positionY": 500,
-                "arm":false,
-                "armAngle": 0,
-                "armPower": 0
+                "positionY": 550,
+                "moveBehavior": "MoveRightLeft",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
             }
 
         ]

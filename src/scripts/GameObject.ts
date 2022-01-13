@@ -1,8 +1,12 @@
+import { Keyboarder } from "./Keyboarder";
+
 export abstract class GameObject {
     name:string="";
     zIndex:string="";
+    image!:HTMLImageElement;
+    outOfGame:boolean=false;
 //    abstract initialize():void;
-    abstract update():void;
+    abstract update(currentTime:DOMHighResTimeStamp):void;
     abstract draw():void;
     //FIXME: avoid to deactivate the ts checker
     //@ts-ignore
@@ -18,4 +22,13 @@ export abstract class GameObject {
         gameElement.appendChild(canvas);
         return canvas.getContext('2d') ?? (() => {throw new Error("ERROR: No background context")})();
     };
+}
+
+export interface GameEnv {
+    gameObjectList:GameObject[];
+    keyboarder:Keyboarder;
+    addGameObjectToList(gameObject:GameObject):void;
+    setremainingAmmunitions(throwAmmunition:number):void;
+    getKeyboarder ():Keyboarder;
+    levelcompleted():void;
 }
