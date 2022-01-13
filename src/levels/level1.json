@@ -1,7 +1,7 @@
 {
     "levelName":"Level 1",
-    "levelSound":"/grizzly-theme.mp4",
-    "levelEndSound":"/grizzly-game-over-theme.mp4",
+    "levelSound":"/grizzy-theme-level1.mp4",
+    "levelEndSound":"/tabodi.mp3",
     "characterList":
         [
             {

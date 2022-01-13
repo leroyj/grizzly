@@ -56,10 +56,17 @@ export class GameEnvironment implements GameEnv{
     let sound      = document.createElement('audio');
     sound.id       = 'audio-player';
     sound.controls = true;
+    sound.autoplay = true;
     sound.loop     = true;
     sound.src      = levelSoundsrc;
     document.getElementById('music-player')!.appendChild(sound);    
   }
+
+  private stopSound () {
+    let sound=document.getElementById('audio-player') as HTMLAudioElement?? (() => {throw new Error("ERROR: No audio-player available")})();
+    sound.pause();
+  }
+
   private loadEndSound (){
     var audio = new Audio(this.levelEndSound);
     audio.play();
@@ -103,6 +110,8 @@ export class GameEnvironment implements GameEnv{
           console.log("[RAF] ReqId (inside the RAF): "+this.reqId);
           window.cancelAnimationFrame(this.reqId);
           this.scoreBoard.displayLevelCompleted();
+          this.stopSound();
+          this.loadEndSound();
           const event = new CustomEvent('nextLevel', { detail: this.levelName });
           const gameElement:Element = document.getElementById('game') ?? (() => {throw new Error("ERROR: No game Element in HTML page")})();
           gameElement.dispatchEvent(event);      
@@ -148,18 +157,10 @@ export class GameEnvironment implements GameEnv{
     console.log("End Of Level!")
     this.levelCompleted=true;
     console.log("ReqId: "+this.reqId);
-    this.scoreBoard.displayLevelCompleted();
-    this.loadEndSound();
-    // this.keyboarder.destructor();
   }
 
   setremainingAmmunitions(remainingAmmunitions: number): void {
       this.remainingAmmunitions=remainingAmmunitions;
       this.scoreBoard.setRemainingAmmunition(remainingAmmunitions);
   }
-/*   reinitialize() {
-    grizzlyArm.initialize(50,400,70,15);
-    score.initialize(0);
-    grizzlyArm.draw();
-  }*/
 }

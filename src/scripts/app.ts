@@ -10,6 +10,7 @@ const gameElement:Element = document.getElementById('game') ?? (() => {throw new
 let currentScore=10;
 let score:ScoreBoard= new ScoreBoard(currentScore);
 const keyboarder:Keyboarder = new Keyboarder();
+// @ts-ignore
 let gameEnvironment:GameEnvironment;
 
 window.addEventListener('load', function () {
