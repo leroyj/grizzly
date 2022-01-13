@@ -15,6 +15,7 @@ export class ThrowDynamicClass extends GameObject {
     constructor(className: string, positionX:number, positionY:number, 
         Angle:number, Power:number,
         thrownObjectImagePath:string,
+        throwAmmunition:number,
         gameEnv:GameEnv) {
         super();
         if (ThrowBehaviorStore[className] === undefined || ThrowBehaviorStore[className] === null) {
@@ -23,6 +24,7 @@ export class ThrowDynamicClass extends GameObject {
         return new ThrowBehaviorStore[className](positionX, positionY, 
             Angle, Power,
             thrownObjectImagePath,
+            throwAmmunition,
             gameEnv);
     }
     update (){

@@ -1,5 +1,7 @@
 {
+    "levelName":"Level 1",
     "levelSound":"/grizzly-theme.mp4",
+    "levelEndSound":"/grizzly-game-over-theme.mp4",
     "characterList":
         [
             {
@@ -12,7 +14,8 @@
                 "throwBehavior": "ThrowNot",
                 "throwAngle": 0,
                 "throwPower": 0,
-                "thrownObjectImagePath": ""
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
             },
             {
                 "name": "Grizzly",
@@ -23,8 +26,9 @@
                 "moveBehavior": "MoveNot",
                 "throwBehavior": "ThrowBalistics",
                 "throwAngle": 70,
-                "throwPower": 15,
-                "thrownObjectImagePath": "/fish.png"
+                "throwPower": 20,
+                "thrownObjectImagePath": "/fish.png",
+                "throwAmmunition": 3
             },
             {
                 "name": "Lemming1",
@@ -36,7 +40,8 @@
                 "throwBehavior": "ThrowNot",
                 "throwAngle": 0,
                 "throwPower": 0,
-                "thrownObjectImagePath": ""
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
             },
             {
                 "name": "Lemming2",
@@ -48,7 +53,8 @@
                 "throwBehavior": "ThrowNot",
                 "throwAngle": 0,
                 "throwPower": 0,
-                "thrownObjectImagePath": ""
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
             },
             {
                 "name": "Lemming3",
@@ -60,7 +66,8 @@
                 "throwBehavior": "ThrowNot",
                 "throwAngle": 0,
                 "throwPower": 0,
-                "thrownObjectImagePath": ""
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
             }
 
         ]

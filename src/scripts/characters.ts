@@ -1,4 +1,4 @@
-import { JsonCharacter } from "./game";
+import { JsonCharacter } from "./JsonLevelType";
 import { GameEnv, GameObject } from "./GameObject";
 import { MoveBehavior } from "./MoveBehavior";
 import { ThrowBehavior } from "./ThrowBehavior";
@@ -31,16 +31,24 @@ export class Character extends GameObject {
 
         try {
             this.moveBehavior = new MoveDynamicClass(character.moveBehavior, '');
-            console.log(`Type of object : ${this.moveBehavior.constructor['name']}`);
-            console.log(this.moveBehavior);
+            console.debug(`[Character.constructor] Type of moveBehavior : ${this.moveBehavior.constructor['name']}`);
+            console.debug(this.moveBehavior);
         } catch (e) {
             console.error(e);
         }
 
         try {
-            this.throwBehavior = new ThrowDynamicClass(character.throwBehavior, this.positionX, this.positionY+100, character.throwAngle, character.throwPower, character.thrownObjectImagePath, gameEnv);
-            console.log(`Type of object : ${this.throwBehavior.constructor['name']}`);
-            console.log(this.throwBehavior);
+            this.throwBehavior = new ThrowDynamicClass(
+                character.throwBehavior, 
+                this.positionX, 
+                this.positionY+100, 
+                character.throwAngle, 
+                character.throwPower, 
+                character.thrownObjectImagePath, 
+                character.throwAmmunition,
+                gameEnv);
+            console.debug(`[Character.constructor] Type of throwBehavior : ${this.throwBehavior.constructor['name']}`);
+            console.debug(this.throwBehavior);
         } catch (e) {
             console.error(e);
         }
@@ -48,9 +56,9 @@ export class Character extends GameObject {
         this.image.src=character.imagePath; // with character images
     }
 
-    update () {
+    update (currentTime:DOMHighResTimeStamp) {
         [this.positionX,this.positionY]=this.moveBehavior.move!(this.positionX,this.positionY);
-        this.throwBehavior?.update();
+        this.throwBehavior?.update(currentTime);
     }
 
     draw () {
@@ -71,7 +79,7 @@ export class Character extends GameObject {
     yNextPosition!:number;
     xInitialSpeedVector!:number;
     yInitialSpeedVector!:number;
-    timestep!:number;
+    birthTime:DOMHighResTimeStamp;
     sprite!:HTMLImageElement;
     thrownObjectImagePath!:string;
     context:CanvasRenderingContext2D;
@@ -82,16 +90,15 @@ export class Character extends GameObject {
     constructor(xCurrentPosition:number, yCurrentPosition:number,
                 xNextPosition:number, yNextPostition:number,
                 xInitialSpeedVector:number, yInitialSpeedVector:number,
-                timestep:number,
                 thrownObjectImagePath:string
                 ) {
         super();
+        this.birthTime=-1;
         this.initialize(xCurrentPosition,yCurrentPosition,
                         xNextPosition,yNextPostition,
                         xInitialSpeedVector,yInitialSpeedVector,
-                        timestep,
                         thrownObjectImagePath);
-        this.name="projectile-"+timestep.toString();
+        this.name="projectile-"+Date.now().toString();
         this.zIndex="20";
         this.context=this.createContext();
     }
@@ -99,7 +106,6 @@ export class Character extends GameObject {
     initialize(xCurrentPosition:number, yCurrentPosition:number,
             xNextPosition:number, yNextPosition:number,
             xInitialSpeedVector:number, yInitialSpeedVector:number,
-            timestep:number,
             thrownObjectImagePath:string) {
         this.xCurrentPosition=xCurrentPosition;
         this.yCurrentPosition=yCurrentPosition;
@@ -107,7 +113,6 @@ export class Character extends GameObject {
         this.yNextPosition=yNextPosition;
         this.xInitialSpeedVector=xInitialSpeedVector;
         this.yInitialSpeedVector=yInitialSpeedVector;
-        this.timestep=timestep;
         this.sprite = new Image();
         this.thrownObjectImagePath = thrownObjectImagePath;
         this.sprite.src = thrownObjectImagePath;
@@ -116,7 +121,11 @@ export class Character extends GameObject {
 //        this.context.imageSmoothingEnabled = false;
     }
 
-    update () {
+    update (timeStamp:DOMHighResTimeStamp) {
+        if (this.birthTime===-1) {
+            this.birthTime=timeStamp;
+        }
+        let currentTime = (timeStamp-this.birthTime)/50;
         if (this.ready) {
             if (this.yNextPosition<-100 || this.yNextPosition>550 || this.xNextPosition>800 || this.xNextPosition<0) {
                 this.ready=false;
@@ -124,10 +133,9 @@ export class Character extends GameObject {
             } else {
                 this.xCurrentPosition=this.xNextPosition;
                 this.yCurrentPosition=this.yNextPosition;
-                this.xNextPosition=Math.round(this.xInitialSpeedVector*this.timestep+this.xCurrentPosition);
-                this.yNextPosition=Math.round(5*this.timestep*this.timestep-this.yInitialSpeedVector*this.timestep+this.yCurrentPosition);
-                console.log("t:"+this.timestep+" x:"+this.xNextPosition+" y:"+this.yNextPosition+" oldx:"+this.xCurrentPosition+" oldy:"+this.yCurrentPosition)
-                this.timestep+=0.1;
+                this.xNextPosition=Math.round(this.xInitialSpeedVector*currentTime+this.xCurrentPosition);
+                this.yNextPosition=Math.round(5*currentTime*currentTime-this.yInitialSpeedVector*currentTime+this.yCurrentPosition);
+                console.log("t:"+currentTime+" x:"+this.xNextPosition+" y:"+this.yNextPosition+" oldx:"+this.xCurrentPosition+" oldy:"+this.yCurrentPosition)
                 this.step += 0.3 ;
                 if (this.step >= 8)
                     this.step -= 8;
@@ -137,14 +145,14 @@ export class Character extends GameObject {
 
     draw () {
         if (this.ready) {
-            this.context.clearRect(this.xCurrentPosition-32,this.yCurrentPosition-32,64,64 );
-            this.drawProjectile(this.context,this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
+            this.context.clearRect(0,0,800,600);
+            //this.context.clearRect(this.xCurrentPosition-32,this.yCurrentPosition-32,64,64 );
+            this.drawProjectile(this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
         }
     }
 
-    drawProjectile(context:CanvasRenderingContext2D,x:number, y:number, r:number, step:number) {
+    private drawProjectile(x:number, y:number, r:number, step:number) {
         var s =r/8;
-        context.drawImage(this.sprite, 128*step, 0, 128, 128, x-64*s, y-64*s, 128*s, 128 *s);
+        this.context.drawImage(this.sprite, 128*step, 0, 128, 128, x-64*s, y-64*s, 128*s, 128 *s);
     }
-
 }
