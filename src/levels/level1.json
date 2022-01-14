@@ -1,5 +1,5 @@
 {
-    "levelName":"Level 1",
+    "levelName":"Level 1 - Tutorial",
     "levelSound":"/grizzy-theme-level1.mp4",
     "levelEndSound":"/tabodi.mp3",
     "characterList":
@@ -30,7 +30,7 @@
                 "throwAngle": 70,
                 "throwPower": 20,
                 "thrownObjectImagePath": "/fish.png",
-                "throwAmmunition": 6,
+                "throwAmmunition": 1,
                 "collisionDetection": false,
                 "pointsToScore": 0
             },
