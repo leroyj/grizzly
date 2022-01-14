@@ -18,8 +18,21 @@
                 "throwAmmunition": 0
             },
             {
-                "name": "Grizzly",
+                "name": "Chicken",
                 "zIndex":"2",
+                "imagePath": "/chicken.png",
+                "positionX": 800,
+                "positionY": 100,
+                "moveBehavior": "MoveFromRightToleft",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
+            },
+            {
+                "name": "Grizzly",
+                "zIndex":"10",
                 "imagePath": "/grizzly.png",
                 "positionX": 30,
                 "positionY": 350,
@@ -32,7 +45,7 @@
             },
             {
                 "name": "Lemming1",
-                "zIndex":"3",
+                "zIndex":"11",
                 "imagePath": "/lemming.png",
                 "positionX": 700,
                 "positionY": 400,
@@ -45,7 +58,7 @@
             },
             {
                 "name": "Lemming2",
-                "zIndex":"3",
+                "zIndex":"12",
                 "imagePath": "/lemming.png",
                 "positionX": 750,
                 "positionY": 475,
@@ -58,7 +71,7 @@
             },
             {
                 "name": "Lemming3",
-                "zIndex":"4",
+                "zIndex":"13",
                 "imagePath": "/lemming.png",
                 "positionX": 725,
                 "positionY": 550,

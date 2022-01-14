@@ -50,9 +50,35 @@ export class MoveByBounceRightLeft implements MoveBehavior {
     }
 }
 
+export class MoveFromRightToleft implements MoveBehavior {
+    move(positionX:number,positionY:number):[number,number] {
+        //console.log("MoveLeft.move called!");
+        return [positionX-1,positionY];
+    }
+}
+
+export class MoveFromTopToGround implements MoveBehavior {
+    directionX:number=1;
+    rangeX=0;
+    move(positionX:number,positionY:number):[number,number] {
+        if ( positionY < 500 ) {
+            positionY+=0.5;
+            if ( (this.rangeX<-1) || (this.rangeX>1) ) {
+                this.directionX*=-1;
+            }
+            this.rangeX+=this.directionX*0.1;
+            positionX+=this.rangeX;
+        }
+    //console.log("MoveLeft.move called!");
+        return [positionX,positionY];
+    }
+}
+
 export const MoveBehaviorStore: any = {
     MoveNot,
     MoveRightLeft,
     MoveByBounce,
-    MoveByBounceRightLeft
+    MoveByBounceRightLeft,
+    MoveFromRightToleft,
+    MoveFromTopToGround
 }

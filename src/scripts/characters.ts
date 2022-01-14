@@ -18,6 +18,7 @@ export class Character extends GameObject {
     moveBehavior!:MoveBehavior;
     throwBehavior!:ThrowBehavior;
     gameEnv:GameEnv;
+    step:number;
 
     constructor (character:JsonCharacter,gameEnv:GameEnv) {
         super();
@@ -28,6 +29,7 @@ export class Character extends GameObject {
         this.positionY=character.positionY;
         this.gameEnv=gameEnv;
         this.context=this.createContext();
+        this.step=0;
 
         try {
             this.moveBehavior = new MoveDynamicClass(character.moveBehavior, '');
@@ -59,12 +61,22 @@ export class Character extends GameObject {
     update (currentTime:DOMHighResTimeStamp) {
         [this.positionX,this.positionY]=this.moveBehavior.move!(this.positionX,this.positionY);
         this.throwBehavior?.update(currentTime);
+        this.step += 1 ;
+        if (this.step >= 8)
+            this.step -= 8;
     }
 
     draw () {
         this.context.clearRect(0,0,800, 600);
-        this.context.drawImage(this.image,this.positionX,this.positionY);
+        //this.context.drawImage(this.image,this.positionX,this.positionY);
+        this.drawSprite(this.image,this.positionX,this.positionY, 8, Math.floor(this.step));
         this.throwBehavior?.draw();
+    }
+
+    private drawSprite(sprite:HTMLImageElement,positionX:number, positionY:number, numberOfSingleImage:number, step:number) {
+        const imageDisplayedScale =numberOfSingleImage/8;
+        const singleImageWidth=sprite.width/8
+        this.context.drawImage(sprite, singleImageWidth*step, 0, singleImageWidth, sprite.height, positionX, positionY, singleImageWidth*imageDisplayedScale, sprite.height*imageDisplayedScale);
     }
 }
 
@@ -136,7 +148,7 @@ export class Character extends GameObject {
                 this.xNextPosition=Math.round(this.xInitialSpeedVector*currentTime+this.xCurrentPosition);
                 this.yNextPosition=Math.round(5*currentTime*currentTime-this.yInitialSpeedVector*currentTime+this.yCurrentPosition);
                 console.log("t:"+currentTime+" x:"+this.xNextPosition+" y:"+this.yNextPosition+" oldx:"+this.xCurrentPosition+" oldy:"+this.yCurrentPosition)
-                this.step += 0.3 ;
+                this.step += 1 ;
                 if (this.step >= 8)
                     this.step -= 8;
             };
@@ -147,11 +159,11 @@ export class Character extends GameObject {
         if (this.ready) {
             this.context.clearRect(0,0,800,600);
             //this.context.clearRect(this.xCurrentPosition-32,this.yCurrentPosition-32,64,64 );
-            this.drawProjectile(this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
+            this.drawSprite(this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
         }
     }
 
-    private drawProjectile(x:number, y:number, r:number, step:number) {
+    private drawSprite(x:number, y:number, r:number, step:number) {
         var s =r/8;
         this.context.drawImage(this.sprite, 128*step, 0, 128, 128, x-64*s, y-64*s, 128*s, 128 *s);
     }

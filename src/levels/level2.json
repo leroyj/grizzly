@@ -31,6 +31,19 @@
                 "throwAmmunition": 5
             },
             {
+                "name": "Zenithal drop",
+                "zIndex":"2",
+                "imagePath": "/zenithal-drop.png",
+                "positionX": 400,
+                "positionY": 0,
+                "moveBehavior": "MoveFromTopToGround",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0
+            },
+            {
                 "name": "Lemming1",
                 "zIndex":"3",
                 "imagePath": "/lemming.png",
