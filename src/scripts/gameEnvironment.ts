@@ -129,10 +129,37 @@ export class GameEnvironment implements GameEnv{
   }
 
   private update(currentTime:DOMHighResTimeStamp) {
-    this.gameObjectList.forEach((currentObject) =>
-    {
+    const projectileList:GameObject[]=[];
+    const characterList:Character[]=[];
+    this.gameObjectList.forEach((currentObject) => {
       currentObject.update(currentTime);
+      //console.log("CURRENTOBJECTNAME: "+currentObject.name)
+      if (currentObject.name.includes("projectile-")) {
+        projectileList.push(currentObject);
+        //console.log ("PROJECTILE: "+currentObject.name);
+      } else {
+        characterList.push(currentObject as Character);
+      }
     });
+    if (projectileList.length) {
+      console.log("BEFORE DETECTION");
+      projectileList.forEach((currentProjectile) => {
+        characterList.forEach((currentCharacter) => {
+          if (this.isColliding(currentProjectile,currentCharacter)) {
+            console.log("[COLLISION DETECTION]");
+            console.log(currentProjectile);
+            console.log(currentCharacter);
+            this.scoreBoard.addPoints(currentCharacter.pointsToScore);
+            currentProjectile.outOfGame=true;
+            currentProjectile.wipeCanvas();
+            currentCharacter.outOfGame=true;
+            currentCharacter.wipeCanvas();
+            this.cleanUpObjectList();
+            console.log(this.gameObjectList);
+          }
+        });
+      });
+    }
 
   }
 
@@ -146,7 +173,6 @@ export class GameEnvironment implements GameEnv{
 
   addGameObjectToList(gameObject:GameObject) {
       this.gameObjectList.push(gameObject); 
-      this.cleanUpObjectList();
   };
 
   private cleanUpObjectList () {
@@ -169,5 +195,17 @@ export class GameEnvironment implements GameEnv{
   setremainingAmmunitions(remainingAmmunitions: number): void {
       this.remainingAmmunitions=remainingAmmunitions;
       this.scoreBoard.setRemainingAmmunition(remainingAmmunitions);
+  }
+
+  isColliding (gameObject1:GameObject, gameObject2:GameObject) {
+    return (
+      gameObject2.collisionDetection && (
+        gameObject1.positionX < gameObject2.positionX + gameObject2.image.width/8 &&
+        gameObject1.positionX + gameObject1.image.width/8 > gameObject2.positionX &&
+        gameObject1.positionY < gameObject2.positionY + gameObject2.image.height &&
+        gameObject1.image.height + gameObject1.positionY > gameObject2.positionY
+      )
+  
+    )
   }
 }

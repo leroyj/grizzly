@@ -3,11 +3,14 @@ import { ScoreBoard } from './ScoreBoard';
 import { Keyboarder } from './Keyboarder';
 import level1 from '../levels/level1.json';
 import level2 from '../levels/level2.json';
+import level3 from '../levels/level3.json';
+import level4 from '../levels/level4.json';
+import { JsonLevel } from './JsonLevelType'
 
-const levelArray = [level1,level2]
+const levelArray = [level1 as JsonLevel,level2 as JsonLevel, level3 as JsonLevel, level4 as JsonLevel]
 let level = 0;
 const gameElement:Element = document.getElementById('game') ?? (() => {throw new Error("ERROR: No game Element in HTML page")})();
-let currentScore=10;
+let currentScore=0;
 let score:ScoreBoard= new ScoreBoard(currentScore);
 const keyboarder:Keyboarder = new Keyboarder();
 // @ts-ignore

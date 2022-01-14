@@ -25,46 +25,53 @@ Faire des effets de sons
 Transformer l'aide à la manière d'un tableau de crochet accroché au mur
 Ajouter du juicy
 [X] remplir les trous
-Gérer le vol d'une poulette
-Gérer la passage d'un ignal
-
+[X] Gérer le vol d'une poulette
+Gérer le passage d'un ignal
+[X] Gérer le paracutage d'une caisse Zenithal
 
 ## LevelDesign
 
-Ajouter des niveaux
+Ajouter un tutoriel
+[X] Ajouter des niveaux
+Ajouter plus de niveaux
 
 ## Game features
 
-gérer les collisions/obstacle
-augmenter le score
-gérer des vies
+[X] gérer les collisions/obstacle
+[X] augmenter le score
+Gérer des vies
+Finir le niveau quand toutes les cibles ont été atteintes
+Gérer un affichage juicy des collisions
+Mieux gérer la rapidité des déplacements et surtout des projectile 
 [X] faire un game over
 faire un game over avec un tapouti qui débarque sur la fenêtre
 
 [X] animer le groupe de lemmings
 [X] animer individuellement les lemmings
 
-faire rebondir sur le sol les éclats
+faire rebondir sur le sol les projectiles
 réaliser des explosions
 permettre de multiples particules en parallèles (classe fusée ?)
 
 [X] faire varier les valeurs initiales avec de l'aléa
 
-Gérer le vent (ventilateur des lemmings) ou la glace (glissade)
-créer un scrolling du paysage
+Gérer le vent (ventilateur des lemmings?) ou la glace (glissade)
 avoir une interface pour pouvoir jouer avec les paramètres
 
-idée de fin de tableau : course poursuite
+idée de fin de tableau : course poursuite (Créer un scrolling du paysage)
 
 ## Dev
 
 Faire des test unitaires (calcul de la parabole, vecteur d'émission)
-rendre le code plus propre
+[X] Rendre le code plus propre
+Rendre le code encore plus propre
 [X] mieux comprendre les binds
-mieux comprendre les prototypes
-mieux comprendre les promises
+Mieux comprendre les prototypes
+Mieux comprendre les promises
+Faire un serveur pour servir les level avec un habillage html différent et socker les high score
+Gérer la création de compte ?
 
 ## Méthodologie
 
 Créer les features dans le projet git
-Les prioriser (v0.1 : gestion des collisions, du scoring, ajout de Level, meilleure de gestion de l'interlevel)
+Les prioriser (v0.1 : gestion des collisions, du scoring, ajout de Level, meilleure de gestion de l'interlevel ave cun tempo)

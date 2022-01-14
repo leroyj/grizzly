@@ -17,6 +17,10 @@ export class ScoreBoard {
         return this.score;
     }
 
+    addPoints(points:number) {
+        return this.score+=points;
+    }
+
     setlevelName(levelName:string) {
         this.levelName =levelName;
     }
