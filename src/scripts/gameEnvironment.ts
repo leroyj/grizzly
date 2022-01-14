@@ -58,6 +58,7 @@ export class GameEnvironment implements GameEnv{
     sound.controls = true;
     sound.autoplay = true;
     sound.loop     = true;
+    sound.volume = 0.5;
     sound.src      = levelSoundsrc;
     document.getElementById('music-player')!.appendChild(sound);    
   }
@@ -89,43 +90,76 @@ export class GameEnvironment implements GameEnv{
   private initialize () {
     //draw character image
     console.log("[initialize] Initialize animation loop")
-    let startTime:DOMHighResTimeStamp=-1;
     let animate = (timestamp:DOMHighResTimeStamp) => {
-      if ((startTime===-1)&&(startTime = timestamp)) {
-        console.debug("[RAF] InitiateReqAnimFrame with ReqID "+this.reqId+" on startTime:"+startTime.toString()+" TimeStamp: "+timestamp);
-        this.reqId = requestAnimationFrame(animate);
-      } else {
+      const elapsedTime=timestamp-then;
+      if (!(this.keyboarder.keyState.ESCAPE)&&!(this.levelCompleted)) {
         let currentTime = timestamp - startTime;
-        if (!(this.keyboarder.keyState.ESCAPE)&&!(this.levelCompleted)) {
+        // Queue up the next call to tick with the browser.
+          this.reqId = requestAnimationFrame(animate);
+        if (elapsedTime>fpsInterval) {
+          then = timestamp - (elapsedTime%fpsInterval);
           // Update game state.
           this.update(currentTime);
           // Draw game bodies.
-          this.draw();    
-          // Queue up the next call to tick with the browser.
-          this.reqId = requestAnimationFrame(animate);
+          this.draw();
         } else {
-          console.log(this.keyboarder.keyState);
-          console.log("[RAF] Cancelled animation loop by ESCAPE: "+this.keyboarder.keyState.ESCAPE);
-          console.log("[RAF] Cancelled animation loop by levelCompleted: "+this.levelCompleted);
-          console.log("[RAF] ReqId (inside the RAF): "+this.reqId);
-          window.cancelAnimationFrame(this.reqId);
-          this.scoreBoard.displayLevelCompleted();
-          this.stopSound();
-          this.loadEndSound();
-          const event = new CustomEvent('nextLevel', { detail: this.levelName });
-          const gameElement:Element = document.getElementById('game') ?? (() => {throw new Error("ERROR: No game Element in HTML page")})();
-          gameElement.dispatchEvent(event);      
+          //console.debug("ElapsedTime: "+elapsedTime +" and fpsInterval"+fpsInterval)
         }
+      } else {
+        console.log(this.keyboarder.keyState);
+        console.log("[RAF] Cancelled animation loop by ESCAPE: "+this.keyboarder.keyState.ESCAPE);
+        console.log("[RAF] Cancelled animation loop by levelCompleted: "+this.levelCompleted);
+        console.log("[RAF] ReqId (inside the RAF): "+this.reqId);
+        window.cancelAnimationFrame(this.reqId);
+        this.scoreBoard.displayLevelCompleted();
+        this.stopSound();
+        this.loadEndSound();
+        const event = new CustomEvent('nextLevel', { detail: this.levelName });
+        const gameElement:Element = document.getElementById('game') ?? (() => {throw new Error("ERROR: No game Element in HTML page")})();
+        gameElement.dispatchEvent(event);      
       }
     }
+    const fps:number=40;
+    const fpsInterval:number=1000/fps;
+    let startTime=window.performance.now();
+    let then = startTime;
+    console.log("startTime: "+startTime+" fps:"+fps+" fpsinterval: "+fpsInterval)
+
     this.reqId = requestAnimationFrame(animate);
   }
 
   private update(currentTime:DOMHighResTimeStamp) {
-    this.gameObjectList.forEach((currentObject) =>
-    {
+    const projectileList:GameObject[]=[];
+    const characterList:Character[]=[];
+    this.gameObjectList.forEach((currentObject) => {
       currentObject.update(currentTime);
+      //console.log("CURRENTOBJECTNAME: "+currentObject.name)
+      if (currentObject.name.includes("projectile-")) {
+        projectileList.push(currentObject);
+        //console.log ("PROJECTILE: "+currentObject.name);
+      } else {
+        characterList.push(currentObject as Character);
+      }
     });
+    if (projectileList.length) {
+      console.log("BEFORE DETECTION");
+      projectileList.forEach((currentProjectile) => {
+        characterList.forEach((currentCharacter) => {
+          if (this.isColliding(currentProjectile,currentCharacter)) {
+            console.log("[COLLISION DETECTION]");
+            console.log(currentProjectile);
+            console.log(currentCharacter);
+            this.scoreBoard.addPoints(currentCharacter.pointsToScore);
+            currentProjectile.outOfGame=true;
+            currentProjectile.wipeCanvas();
+            currentCharacter.outOfGame=true;
+            currentCharacter.wipeCanvas();
+            this.cleanUpObjectList();
+            console.log(this.gameObjectList);
+          }
+        });
+      });
+    }
 
   }
 
@@ -139,7 +173,6 @@ export class GameEnvironment implements GameEnv{
 
   addGameObjectToList(gameObject:GameObject) {
       this.gameObjectList.push(gameObject); 
-      this.cleanUpObjectList();
   };
 
   private cleanUpObjectList () {
@@ -162,5 +195,17 @@ export class GameEnvironment implements GameEnv{
   setremainingAmmunitions(remainingAmmunitions: number): void {
       this.remainingAmmunitions=remainingAmmunitions;
       this.scoreBoard.setRemainingAmmunition(remainingAmmunitions);
+  }
+
+  isColliding (gameObject1:GameObject, gameObject2:GameObject) {
+    return (
+      gameObject2.collisionDetection && (
+        gameObject1.positionX < gameObject2.positionX + gameObject2.image.width/8 &&
+        gameObject1.positionX + gameObject1.image.width/8 > gameObject2.positionX &&
+        gameObject1.positionY < gameObject2.positionY + gameObject2.image.height &&
+        gameObject1.image.height + gameObject1.positionY > gameObject2.positionY
+      )
+  
+    )
   }
 }

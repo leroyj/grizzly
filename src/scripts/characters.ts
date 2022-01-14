@@ -14,10 +14,12 @@ export class Character extends GameObject {
     positionX:number;
     positionY:number;
     image:HTMLImageElement;
-    context:CanvasRenderingContext2D;
     moveBehavior!:MoveBehavior;
     throwBehavior!:ThrowBehavior;
     gameEnv:GameEnv;
+    offsetOfSprite:number;
+    collisionDetection:boolean;
+    pointsToScore:number;
 
     constructor (character:JsonCharacter,gameEnv:GameEnv) {
         super();
@@ -28,6 +30,10 @@ export class Character extends GameObject {
         this.positionY=character.positionY;
         this.gameEnv=gameEnv;
         this.context=this.createContext();
+        this.offsetOfSprite=0;
+        this.collisionDetection=character.collisionDetection;
+        this.pointsToScore=character.pointsToScore;
+
 
         try {
             this.moveBehavior = new MoveDynamicClass(character.moveBehavior, '');
@@ -59,12 +65,22 @@ export class Character extends GameObject {
     update (currentTime:DOMHighResTimeStamp) {
         [this.positionX,this.positionY]=this.moveBehavior.move!(this.positionX,this.positionY);
         this.throwBehavior?.update(currentTime);
+        this.offsetOfSprite += 1 ;
+        if (this.offsetOfSprite >= 8)
+            this.offsetOfSprite -= 8;
     }
 
     draw () {
         this.context.clearRect(0,0,800, 600);
-        this.context.drawImage(this.image,this.positionX,this.positionY);
+        //this.context.drawImage(this.image,this.positionX,this.positionY);
+        this.drawSprite(this.image,this.positionX,this.positionY, 8, Math.floor(this.offsetOfSprite));
         this.throwBehavior?.draw();
+    }
+
+    private drawSprite(sprite:HTMLImageElement,positionX:number, positionY:number, numberOfSingleImage:number, offsiteOfSprite:number) {
+        const imageDisplayedScale =numberOfSingleImage/8;
+        const singleImageWidth=sprite.width/8
+        this.context.drawImage(sprite, singleImageWidth*offsiteOfSprite, 0, singleImageWidth, sprite.height, positionX, positionY, singleImageWidth*imageDisplayedScale, sprite.height*imageDisplayedScale);
     }
 }
 
@@ -73,51 +89,43 @@ export class Character extends GameObject {
  */
  export class Projectile extends GameObject {
 
-    xCurrentPosition!:number;
-    yCurrentPosition!:number;
     xNextPosition!:number;
     yNextPosition!:number;
     xInitialSpeedVector!:number;
     yInitialSpeedVector!:number;
     birthTime:DOMHighResTimeStamp;
-    sprite!:HTMLImageElement;
     thrownObjectImagePath!:string;
-    context:CanvasRenderingContext2D;
     reqId:number=0;
     step:number=0;
     ready:boolean=false;
+    collisionDetection: boolean=true;
 
-    constructor(xCurrentPosition:number, yCurrentPosition:number,
-                xNextPosition:number, yNextPostition:number,
+    constructor(positionX:number, positionY:number,
+                xNextPosition:number, yNextPosition:number,
                 xInitialSpeedVector:number, yInitialSpeedVector:number,
-                thrownObjectImagePath:string
+                thrownObjectImagePath:string,
                 ) {
         super();
         this.birthTime=-1;
-        this.initialize(xCurrentPosition,yCurrentPosition,
-                        xNextPosition,yNextPostition,
-                        xInitialSpeedVector,yInitialSpeedVector,
-                        thrownObjectImagePath);
         this.name="projectile-"+Date.now().toString();
+        console.log(this.name);
         this.zIndex="20";
         this.context=this.createContext();
-    }
-
-    initialize(xCurrentPosition:number, yCurrentPosition:number,
-            xNextPosition:number, yNextPosition:number,
-            xInitialSpeedVector:number, yInitialSpeedVector:number,
-            thrownObjectImagePath:string) {
-        this.xCurrentPosition=xCurrentPosition;
-        this.yCurrentPosition=yCurrentPosition;
+        this.positionX=positionX;
+        this.positionY=positionY;
         this.xNextPosition=xNextPosition;
         this.yNextPosition=yNextPosition;
         this.xInitialSpeedVector=xInitialSpeedVector;
         this.yInitialSpeedVector=yInitialSpeedVector;
-        this.sprite = new Image();
+        this.initialize(thrownObjectImagePath);
+    }
+
+    initialize(thrownObjectImagePath:string) {
+        this.image = new Image();
+        this.image.onload = () => {this.ready=true; console.log("INFO: fish image onload done")};
         this.thrownObjectImagePath = thrownObjectImagePath;
-        this.sprite.src = thrownObjectImagePath;
-        console.log(this.sprite + " - " + this.xCurrentPosition  + " - " +  this.yCurrentPosition)
-        this.sprite.onload = () => {this.ready=true; console.log("INFO: fish image onload done")};
+        this.image.src = thrownObjectImagePath;
+        console.log(this.image + " - " + this.positionX  + " - " +  this.positionY)
 //        this.context.imageSmoothingEnabled = false;
     }
 
@@ -131,12 +139,12 @@ export class Character extends GameObject {
                 this.ready=false;
                 this.outOfGame=true;
             } else {
-                this.xCurrentPosition=this.xNextPosition;
-                this.yCurrentPosition=this.yNextPosition;
-                this.xNextPosition=Math.round(this.xInitialSpeedVector*currentTime+this.xCurrentPosition);
-                this.yNextPosition=Math.round(5*currentTime*currentTime-this.yInitialSpeedVector*currentTime+this.yCurrentPosition);
-                console.log("t:"+currentTime+" x:"+this.xNextPosition+" y:"+this.yNextPosition+" oldx:"+this.xCurrentPosition+" oldy:"+this.yCurrentPosition)
-                this.step += 0.3 ;
+                this.positionX=this.xNextPosition;
+                this.positionY=this.yNextPosition;
+                this.xNextPosition=Math.round(this.xInitialSpeedVector*currentTime+this.positionX);
+                this.yNextPosition=Math.round(5*currentTime*currentTime-this.yInitialSpeedVector*currentTime+this.positionY);
+                console.log("t:"+currentTime+" x:"+this.xNextPosition+" y:"+this.yNextPosition+" oldx:"+this.positionX+" oldy:"+this.positionY)
+                this.step += 1 ;
                 if (this.step >= 8)
                     this.step -= 8;
             };
@@ -147,12 +155,12 @@ export class Character extends GameObject {
         if (this.ready) {
             this.context.clearRect(0,0,800,600);
             //this.context.clearRect(this.xCurrentPosition-32,this.yCurrentPosition-32,64,64 );
-            this.drawProjectile(this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
+            this.drawSprite(this.xNextPosition,this.yNextPosition, 2, Math.floor(this.step));
         }
     }
 
-    private drawProjectile(x:number, y:number, r:number, step:number) {
+    private drawSprite(x:number, y:number, r:number, step:number) {
         var s =r/8;
-        this.context.drawImage(this.sprite, 128*step, 0, 128, 128, x-64*s, y-64*s, 128*s, 128 *s);
+        this.context.drawImage(this.image, 128*step, 0, 128, 128, x-64*s, y-64*s, 128*s, 128 *s);
     }
 }

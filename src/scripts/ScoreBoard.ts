@@ -17,6 +17,10 @@ export class ScoreBoard {
         return this.score;
     }
 
+    addPoints(points:number) {
+        return this.score+=points;
+    }
+
     setlevelName(levelName:string) {
         this.levelName =levelName;
     }
@@ -75,14 +79,14 @@ export class ScoreBoard {
         const currentScore = this.score.toString();
         const paddedScore = currentScore.padStart(5, '0');
         this.context.clearRect(0,0,800,600);
-        this.context.font = '48px sans-serif';
+        this.context.font = '48px Slackey';
         this.context.fillStyle = 'orange';
         this.context.strokeText(paddedScore, 20, 60);
         this.context.fillText(paddedScore, 20, 60);
-        this.context.strokeText(this.remainingAmmunitions.toString(), 700, 60);
-        this.context.fillText(this.remainingAmmunitions.toString(), 700, 60);
+        this.context.strokeText("🐟 "+this.remainingAmmunitions.toString(), 680, 60);
+        this.context.fillText("🐟 "+this.remainingAmmunitions.toString(), 680, 60);
         //display levelName
-        this.context.font = '30px sans-serif';
+        this.context.font = '30px Slackey';
         this.context.fillStyle = 'orange';
         this.context.strokeText(this.levelName, 350, 60);
         this.context.fillText(this.levelName, 350, 60);
@@ -92,7 +96,7 @@ export class ScoreBoard {
             this.context.fillStyle = 'black';
             this.context.fill();
             this.context.globalAlpha=1.0;
-            this.context.font = '36px sans-serif';
+            this.context.font = '36px Slackey';
             this.context.fillStyle = 'lightgrey';
             this.context.lineWidth = 3;
             this.context.strokeText(this.messageDisplayed, 271, 301);

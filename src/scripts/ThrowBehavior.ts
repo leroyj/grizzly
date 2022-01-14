@@ -45,6 +45,7 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
     thrownObjectImagePath:string;
     gameEnv:GameEnv;
     keyboarder:Keyboarder;
+    audio:HTMLAudioElement;
  
     constructor (positionX:number, positionY:number, 
                 Angle:number, Power:number,
@@ -73,7 +74,8 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
         " ThrwnImgPth:"+thrownObjectImagePath+
         " Ammo:"+throwAmmunition+
         "GameEnv:"+gameEnv)
-
+        this.audio = new Audio("/throw.mp4");
+        this.audio.volume=0.5;
      }
 
     /**
@@ -167,7 +169,7 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
       }
       
     private powerUp() {
-        if (this.powerAsNormOfVelocityVector < 25) { this.powerAsNormOfVelocityVector+=0.1 }
+        if (this.powerAsNormOfVelocityVector < 30) { this.powerAsNormOfVelocityVector+=0.1 }
       }
       
     private powerDown() {
@@ -181,7 +183,8 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
         }
         const cFire = new Date().valueOf();
         if ((cFire - this.lastFire) / 1000 > 1/this.fireRate) { 
-            console.log("[ThrowBalistics.throwProjectile] remainingAmmunitions: "+this.remainingAmmunitions)           
+            console.log("[ThrowBalistics.throwProjectile] remainingAmmunitions: "+this.remainingAmmunitions) 
+            this.loadThrowSound();          
             this.gameEnv.addGameObjectToList(new Projectile (
                                 this.positionX, this.positionY,
                                 this.positionX, this.positionY,
@@ -193,6 +196,11 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
             this.lastFire = cFire;
         }
     }
+
+    private loadThrowSound (){
+        this.audio.play();
+      }
+    
 
 }
 

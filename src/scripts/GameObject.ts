@@ -5,6 +5,10 @@ export abstract class GameObject {
     zIndex:string="";
     image!:HTMLImageElement;
     outOfGame:boolean=false;
+    positionX:number=0;
+    positionY:number=0;
+    collisionDetection:boolean=false;
+    context!:CanvasRenderingContext2D;
 //    abstract initialize():void;
     abstract update(currentTime:DOMHighResTimeStamp):void;
     abstract draw():void;
@@ -22,6 +26,9 @@ export abstract class GameObject {
         gameElement.appendChild(canvas);
         return canvas.getContext('2d') ?? (() => {throw new Error("ERROR: No background context")})();
     };
+    wipeCanvas() {
+        this.context.clearRect(0,0,800,600)
+    }
 }
 
 export interface GameEnv {

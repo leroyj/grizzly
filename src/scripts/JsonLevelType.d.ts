@@ -10,6 +10,8 @@ export type JsonCharacter = {
     "throwPower": number;
     "thrownObjectImagePath": string;
     "throwAmmunition": number;
+    "collisionDetection": boolean;
+    "pointsToScore": number;
 }
 
 export type JsonLevel = {

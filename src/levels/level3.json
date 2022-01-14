@@ -1,0 +1,98 @@
+{
+    "levelName":"Level 3",
+    "levelSound":"/grizzy-theme-level1.mp4",
+    "levelEndSound":"/tabodi.mp3",
+    "characterList":
+        [
+            {
+                "name": "Landscape",
+                "zIndex":"1",
+                "imagePath": "/landscape.png",
+                "positionX": 0,
+                "positionY": 0,
+                "moveBehavior": "MoveNot",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0,
+                "collisionDetection": false,
+                "pointsToScore": 0
+            },
+            {
+                "name": "Chicken",
+                "zIndex":"2",
+                "imagePath": "/chicken.png",
+                "positionX": 800,
+                "positionY": 100,
+                "moveBehavior": "MoveFromRightToleft",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0,
+                "collisionDetection": true,
+                "pointsToScore": 1
+            },
+            {
+                "name": "Grizzly",
+                "zIndex":"10",
+                "imagePath": "/grizzly.png",
+                "positionX": 30,
+                "positionY": 350,
+                "moveBehavior": "MoveNot",
+                "throwBehavior": "ThrowBalistics",
+                "throwAngle": 70,
+                "throwPower": 20,
+                "thrownObjectImagePath": "/fish.png",
+                "throwAmmunition": 6,
+                "collisionDetection": false,
+                "pointsToScore": 0
+            },
+            {
+                "name": "Lemming1",
+                "zIndex":"11",
+                "imagePath": "/lemming.png",
+                "positionX": 700,
+                "positionY": 400,
+                "moveBehavior": "MoveByBounceRightLeft",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0,
+                "collisionDetection": true,
+                "pointsToScore": 10
+            },
+            {
+                "name": "Lemming2",
+                "zIndex":"12",
+                "imagePath": "/lemming.png",
+                "positionX": 750,
+                "positionY": 475,
+                "moveBehavior": "MoveByBounce",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0,
+                "collisionDetection": true,
+                "pointsToScore": 10
+            },
+            {
+                "name": "Lemming3",
+                "zIndex":"13",
+                "imagePath": "/lemming.png",
+                "positionX": 725,
+                "positionY": 550,
+                "moveBehavior": "MoveRightLeft",
+                "throwBehavior": "ThrowNot",
+                "throwAngle": 0,
+                "throwPower": 0,
+                "thrownObjectImagePath": "",
+                "throwAmmunition": 0,
+                "collisionDetection": true,
+                "pointsToScore": 10
+            }
+        ]
+}
