@@ -1,6 +1,6 @@
 {
   "name": "grizzly",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "scripts": {
     "test": "cucumber-js --format html:test-output/report.html",
     "dev": "vite",
