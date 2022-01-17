@@ -4,7 +4,7 @@
 
 ## Demo
 
-Have a look to the [demo](http://grizzly.djoo.org/)!
+You can play the game by visiting the [demo website](http://grizzly.djoo.org/)!
 
 ## Intent
 

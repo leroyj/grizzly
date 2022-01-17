@@ -4,6 +4,7 @@
         "documentation",
         "Artwork",
         "core",
-        "UX"
+        "UX",
+        "Security"
     ]
 }
