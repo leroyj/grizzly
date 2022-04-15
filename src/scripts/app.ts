@@ -1,4 +1,4 @@
-import { GameEnvironment } from './GameEnvironment';
+import { GameEnvironment } from './gameEnvironment';
 import { ScoreBoard } from './ScoreBoard';
 import { Keyboarder } from './Keyboarder';
 import level1 from '../levels/level1.json';
@@ -17,10 +17,10 @@ const keyboarder:Keyboarder = new Keyboarder();
 let gameEnvironment:GameEnvironment;
 
 window.addEventListener('load', function () {
-  gameEnvironment=new GameEnvironment(levelArray[level],score,keyboarder);    
+  gameEnvironment=new GameEnvironment(levelArray[level],score,keyboarder);
 })
 
-gameElement.addEventListener('nextLevel', function (event:Event) { 
+gameElement.addEventListener('nextLevel', function (event:Event) {
   const detail = (<CustomEvent>event).detail;
   console.error("level: "+(level+1)+"(array:"+level+") ");
   if (detail.slice(-1)<level) {
@@ -38,7 +38,7 @@ gameElement.addEventListener('nextLevel', function (event:Event) {
     keyboarder.reinitialize();
     score = new ScoreBoard(currentScore);
     console.log(levelArray[level]);
-    gameEnvironment=new GameEnvironment(levelArray[level],score,keyboarder);  
+    gameEnvironment=new GameEnvironment(levelArray[level],score,keyboarder);
     return;
   } else {
     score.displayGameOver();
