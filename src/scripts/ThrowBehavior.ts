@@ -1,4 +1,4 @@
-import { Projectile } from "./characters";
+import { Projectile } from "./Characters";
 import { GameEnv, GameObject } from "./GameObject";
 import { Keyboarder } from "./Keyboarder";
 export interface ThrowBehavior extends GameObject {
@@ -30,13 +30,13 @@ export class ThrowNot extends GameObject implements ThrowBehavior {
 }
 
 export class ThrowBalistics extends GameObject implements ThrowBehavior{
-    positionX:number; 
-    positionY:number; 
-    angleOfVelocityVector:number; 
-    powerAsNormOfVelocityVector:number; 
-    xInitialVelocityVector!:number; 
+    positionX:number;
+    positionY:number;
+    angleOfVelocityVector:number;
+    powerAsNormOfVelocityVector:number;
+    xInitialVelocityVector!:number;
     yInitialVelocityVector!:number;
-    xNormalizedVelocityVector!:number; 
+    xNormalizedVelocityVector!:number;
     yNormalizedVelocityVector!:number;
     context:CanvasRenderingContext2D;
     lastFire:number=new Date().valueOf();
@@ -46,8 +46,8 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
     gameEnv:GameEnv;
     keyboarder:Keyboarder;
     audio:HTMLAudioElement;
- 
-    constructor (positionX:number, positionY:number, 
+
+    constructor (positionX:number, positionY:number,
                 Angle:number, Power:number,
                 thrownObjectImagePath:string,
                 throwAmmunition:number,
@@ -67,10 +67,10 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
         this.keyboarder=gameEnv.getKeyboarder();
         this.computeSpeedVector();
         this.context=this.createContext();
-        console.debug("[ThrowBalistics] ThrowBalistics created - posx:"+ positionX + 
-        " posy:"+ positionY + 
-        " Angle:"+Angle + 
-        " Power:"+Power + 
+        console.debug("[ThrowBalistics] ThrowBalistics created - posx:"+ positionX +
+        " posy:"+ positionY +
+        " Angle:"+Angle +
+        " Power:"+Power +
         " ThrwnImgPth:"+thrownObjectImagePath+
         " Ammo:"+throwAmmunition+
         "GameEnv:"+gameEnv)
@@ -92,9 +92,9 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
         let armAngleRad = this.degToRad(this.angleOfVelocityVector);
         this.xInitialVelocityVector=this.powerAsNormOfVelocityVector*Math.cos(armAngleRad);
         this.yInitialVelocityVector=this.powerAsNormOfVelocityVector*Math.sin(armAngleRad);
-        this.xNormalizedVelocityVector=Math.cos(armAngleRad); 
+        this.xNormalizedVelocityVector=Math.cos(armAngleRad);
         this.yNormalizedVelocityVector=Math.sin(armAngleRad);
-    
+
     }
 
     /**
@@ -153,8 +153,8 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
             console.log("[ThrowBalistics.update] SPACE key: "+this.keyboarder.keyState.SPACE);
             console.log("[ThrowBalistics.update] remainingAmmunitions: "+this.remainingAmmunitions);
             this.throwProjectile();
-        }  
-        this.keyboarder.keyState.DOWN && this.lower();        
+        }
+        this.keyboarder.keyState.DOWN && this.lower();
         this.keyboarder.keyState.UP && this.higher();
         this.keyboarder.keyState.LEFT && this.powerDown();
         this.keyboarder.keyState.RIGHT && this.powerUp();
@@ -163,28 +163,28 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
     private higher() {
         if (this.angleOfVelocityVector < 120) { this.angleOfVelocityVector+=1 }
       }
-      
+
     private lower() {
         if (this.angleOfVelocityVector > 10) { this.angleOfVelocityVector-=1 }
       }
-      
+
     private powerUp() {
         if (this.powerAsNormOfVelocityVector < 30) { this.powerAsNormOfVelocityVector+=0.1 }
       }
-      
+
     private powerDown() {
         if (this.powerAsNormOfVelocityVector > 15) { this.powerAsNormOfVelocityVector-=0.1 }
       }
-    
+
     throwProjectile() {
         if (this.remainingAmmunitions<1) {
             this.gameEnv.levelcompleted();
             return;
         }
         const cFire = new Date().valueOf();
-        if ((cFire - this.lastFire) / 1000 > 1/this.fireRate) { 
-            console.log("[ThrowBalistics.throwProjectile] remainingAmmunitions: "+this.remainingAmmunitions) 
-            this.loadThrowSound();          
+        if ((cFire - this.lastFire) / 1000 > 1/this.fireRate) {
+            console.log("[ThrowBalistics.throwProjectile] remainingAmmunitions: "+this.remainingAmmunitions)
+            this.loadThrowSound();
             this.gameEnv.addGameObjectToList(new Projectile (
                                 this.positionX, this.positionY,
                                 this.positionX, this.positionY,
@@ -200,7 +200,6 @@ export class ThrowBalistics extends GameObject implements ThrowBehavior{
     private loadThrowSound (){
         this.audio.play();
       }
-    
 
 }
 

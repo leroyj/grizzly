@@ -1,5 +1,5 @@
 import { JsonLevel } from "./JsonLevelType";
-import { Character } from "./characters";
+import { Character } from "./Characters";
 import { ScoreBoard } from "./ScoreBoard"
 import { Keyboarder } from "./Keyboarder";
 import { GameEnv, GameObject } from "./GameObject";

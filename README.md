@@ -1,4 +1,4 @@
-# Angry Grizzly!
+# Angry Grizzly
 
 ![screenshot](https://github.com/leroyj/grizzly/blob/main/src/assets/screenshot.png?raw=true)
 
