@@ -1,4 +1,4 @@
-# Grizzy et les Lemmings
+# Angry Grizzly!
 
 ![screenshot](https://github.com/leroyj/grizzly/blob/main/src/assets/screenshot.png?raw=true)
 
@@ -8,7 +8,7 @@ You can play the game by visiting the [demo website](http://grizzly.djoo.org/)!
 
 ## Intent
 
-This game is a fan art inspired by the animation serie Grizzly and the Lemmings from the talented french [Studio Hari](https://www.studiohari.com/).
+This game is a fan art inspired by the animation serie Grizzy and the Lemmings from the talented french [Studio Hari](https://www.studiohari.com/).
 
 This game follows three objectives:
 
