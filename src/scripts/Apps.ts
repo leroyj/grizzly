@@ -1,4 +1,4 @@
-import { GameEnvironment } from './GameEnvironment';
+import { GameEnvironment } from './gameEnvironment';
 import { ScoreBoard } from './ScoreBoard';
 import { Keyboarder } from './Keyboarder';
 import level1 from '../levels/level1.json';
