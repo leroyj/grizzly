@@ -5,6 +5,7 @@
         "Artwork",
         "core",
         "UX",
-        "Security"
+        "Security",
+        "build"
     ]
 }
