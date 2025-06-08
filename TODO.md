@@ -1,6 +1,6 @@
-_(Have been moved to Github issues...)_
-
 # TO DO
+
+ _(Have been moved to Github issues...)_ !
 
 ## Ops
 
@@ -44,7 +44,7 @@ Ajouter du juicy
 [ ] Gérer des vies
 [ ] Finir le niveau quand toutes les cibles ont été atteintes
 [ ] Gérer un affichage juicy des collisions
-[ ] Mieux gérer la rapidité des déplacements et surtout des projectiles 
+[ ] Mieux gérer la rapidité des déplacements et surtout des projectiles
 [X] faire un game over
 [ ] faire un game over avec un tapouti qui débarque sur la fenêtre
 
